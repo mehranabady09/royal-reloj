@@ -1255,7 +1255,7 @@ footer {
       <div class="pricing-card">
         <div class="p-tier">Oferta</div>
         <div class="p-name">2 Unidades</div>
-        <div class="p-desc">Compra 2 relojes AAA+ con caja y documentos a precio especial. Ideal para pareja o regalo doble.</div>
+        <div class="p-desc">Compra 2 relojes AAA+ sin caja a precio especial. Ideal para pareja o regalo doble.</div>
       </div>
       <div class="pricing-card featured">
         <div class="p-tier">Máxima Calidad</div>
@@ -1810,6 +1810,161 @@ setTimeout(() => {
   // HOW TO ADD PHOTOS: add entries matching the data-model slug on each card
   // Example: 'submariner-negro': ['imgs/sub-negro-1.jpg', 'imgs/sub-negro-2.jpg'],
   var PHOTOS = {
+    'submariner-negro': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/submariner-negro/submariner-negro-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/submariner-negro/submariner-negro-2.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/submariner-negro/submariner-negro-3.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/submariner-negro/submariner-negro-4.jpg',
+    ],
+    'gmt-negro': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-negro/gmt-negro-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-negro/gmt-negro-2.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-negro/gmt-negro-3.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-negro/gmt-negro-4.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-negro/gmt-negro-5.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-negro/gmt-negro-6.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-negro/gmt-negro-7.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-negro/gmt-negro-8.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-negro/gmt-negro-9.jpg',
+    ],
+    'gmt-negro-dostone': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-negro-dostone/gmt-negro-dostone-1.jpg',
+    ],
+    'gmt-batman': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-batman/gmt-batman-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-batman/gmt-batman-2.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-batman/gmt-batman-3.jpg',
+    ],
+    'gmt-pepsi': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-pepsi/gmt-pepsi-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-pepsi/gmt-pepsi-2.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/gmt-pepsi/gmt-pepsi-3.jpg',
+    ],
+    'daytona-tiffany': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-2.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-3.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-4.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-5.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-6.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-7.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-8.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-9.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-10.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-11.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-12.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-13.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-14.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-15.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-16.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-17.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-18.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-tiffany/daytona-tiffany-19.jpg',
+    ],
+    'daytona-panda': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-panda/daytona-panda-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-panda/daytona-panda-2.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-panda/daytona-panda-3.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-panda/daytona-panda-4.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-panda/daytona-panda-5.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-panda/daytona-panda-6.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-panda/daytona-panda-7.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-panda/daytona-panda-8.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-panda/daytona-panda-9.jpg',
+    ],
+    'daytona-gold': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-gold/daytona-gold-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-gold/daytona-gold-2.jpg',
+    ],
+    'daytona-negro': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-negro/daytona-negro-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-negro/daytona-negro-2.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-negro/daytona-negro-3.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-negro/daytona-negro-4.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-negro/daytona-negro-5.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-negro/daytona-negro-6.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-negro/daytona-negro-7.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-negro/daytona-negro-8.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-negro/daytona-negro-9.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/daytona-negro/daytona-negro-10.jpg',
+    ],
+    'datejust': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/datejust/datejust-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/datejust/datejust-2.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/datejust/datejust-3.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/datejust/datejust-4.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/datejust/datejust-5.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/datejust/datejust-6.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/datejust/datejust-7.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/datejust/datejust-8.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/datejust/datejust-9.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/datejust/datejust-10.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/datejust/datejust-11.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/datejust/datejust-12.jpg',
+    ],
+    'day-date': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/day-date/day-date-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/day-date/day-date-2.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/day-date/day-date-3.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/day-date/day-date-4.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/day-date/day-date-5.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/day-date/day-date-6.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/day-date/day-date-7.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/day-date/day-date-8.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/day-date/day-date-9.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/day-date/day-date-10.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/day-date/day-date-11.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/day-date/day-date-12.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/day-date/day-date-13.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/day-date/day-date-14.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/day-date/day-date-15.jpg',
+    ],
+    'patek-nautilus-tiffany': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/patek-nautilus-tiffany/patek-nautilus-tiffany-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/patek-nautilus-tiffany/patek-nautilus-tiffany-2.jpg',
+    ],
+    'patek-nautilus-azul': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/patek-nautilus-azul/patek-nautilus-azul-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/patek-nautilus-azul/patek-nautilus-azul-2.jpg',
+    ],
+    'patek-aquanaut-azul': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/patek-aquanaut-azul/patek-aquanaut-azul-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/patek-aquanaut-azul/patek-aquanaut-azul-2.jpg',
+    ],
+    'patek-aquanaut-rosa-gold': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/patek-aquanaut-rosa-gold/patek-aquanaut-rosa-gold-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/patek-aquanaut-rosa-gold/patek-aquanaut-rosa-gold-2.jpg',
+    ],
+    'ap-offshore-diver-blanco': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-offshore-diver-blanco/ap-offshore-diver-blanco-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-offshore-diver-blanco/ap-offshore-diver-blanco-2.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-offshore-diver-blanco/ap-offshore-diver-blanco-3.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-offshore-diver-blanco/ap-offshore-diver-blanco-4.jpg',
+    ],
+    'ap-royal-oak-cronografo-azul': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-cronografo-azul/ap-royal-oak-cronografo-azul-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-cronografo-azul/ap-royal-oak-cronografo-azul-2.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-cronografo-azul/ap-royal-oak-cronografo-azul-3.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-cronografo-azul/ap-royal-oak-cronografo-azul-4.jpg',
+    ],
+    'ap-royal-oak-skeleton-negro': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-skeleton-negro/ap-royal-oak-skeleton-negro-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-skeleton-negro/ap-royal-oak-skeleton-negro-2.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-skeleton-negro/ap-royal-oak-skeleton-negro-3.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-skeleton-negro/ap-royal-oak-skeleton-negro-4.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-skeleton-negro/ap-royal-oak-skeleton-negro-5.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-skeleton-negro/ap-royal-oak-skeleton-negro-6.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-skeleton-negro/ap-royal-oak-skeleton-negro-7.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-skeleton-negro/ap-royal-oak-skeleton-negro-8.jpg',
+    ],
+    'ap-royal-oak-skeleton-plata': [
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-skeleton-plata/ap-royal-oak-skeleton-plata-1.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-skeleton-plata/ap-royal-oak-skeleton-plata-2.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-skeleton-plata/ap-royal-oak-skeleton-plata-3.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-skeleton-plata/ap-royal-oak-skeleton-plata-4.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-skeleton-plata/ap-royal-oak-skeleton-plata-5.jpg',
+      'https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/photos/ap-royal-oak-skeleton-plata/ap-royal-oak-skeleton-plata-6.jpg',
+    ],
   };
 
   function placeholder(name) {
