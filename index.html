@@ -2942,7 +2942,224 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
   }
 })();
 </script>
-</body>
-</html>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SPIN-TO-WIN WHEEL POPUP
+═══════════════════════════════════════════════════════════════ -->
+<div id="spinOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9999;align-items:center;justify-content:center;padding:16px">
+  <div id="spinBox" style="background:#fff;border-radius:20px;max-width:420px;width:100%;padding:28px 24px 24px;position:relative;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4)">
+    <button onclick="closeSpinWheel()" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:22px;cursor:pointer;color:#aaa;line-height:1">×</button>
+
+    <!-- Step 1: Enter WhatsApp -->
+    <div id="spinStep1">
+      <div style="font-size:32px;margin-bottom:6px">🎰</div>
+      <h2 style="font-family:Georgia,serif;font-size:22px;color:#0a2b1c;margin:0 0 6px">¡Gira y gana!</h2>
+      <p style="font-size:14px;color:#555;margin:0 0 18px;line-height:1.5">Introduce tu WhatsApp y gira la ruleta para conseguir tu descuento exclusivo</p>
+      <input id="spinWa" type="tel" placeholder="Tu número de WhatsApp" style="width:100%;box-sizing:border-box;padding:13px 16px;border:2px solid #e0e0e0;border-radius:10px;font-size:15px;margin-bottom:14px;outline:none" />
+      <button onclick="startSpin()" style="width:100%;padding:14px;background:linear-gradient(135deg,#0a2b1c,#1a5c3a);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:0.03em">🎡 ¡GIRAR AHORA!</button>
+      <p style="font-size:11px;color:#aaa;margin:10px 0 0">Sin spam. Solo tu descuento.</p>
+    </div>
+
+    <!-- Step 2: The Wheel -->
+    <div id="spinStep2" style="display:none">
+      <p style="font-size:13px;color:#777;margin:0 0 10px">¡Gira la ruleta!</p>
+      <div style="position:relative;display:inline-block;margin-bottom:12px">
+        <!-- Pointer -->
+        <div style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:22px solid #c8a84b;z-index:2;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.3))"></div>
+        <canvas id="spinCanvas" width="280" height="280" style="border-radius:50%;display:block"></canvas>
+      </div>
+      <button id="spinBtn" onclick="doSpin()" style="padding:13px 36px;background:linear-gradient(135deg,#c8a84b,#a07830);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer">🎯 ¡GIRAR!</button>
+    </div>
+
+    <!-- Step 3: Result -->
+    <div id="spinStep3" style="display:none">
+      <div id="spinEmoji" style="font-size:48px;margin-bottom:8px"></div>
+      <h2 style="font-family:Georgia,serif;font-size:24px;color:#0a2b1c;margin:0 0 6px" id="spinTitle"></h2>
+      <p style="font-size:14px;color:#555;margin:0 0 16px" id="spinDesc"></p>
+      <div id="spinCode" style="background:#f5f0e8;border:2px dashed #c8a84b;border-radius:10px;padding:12px;font-size:22px;font-weight:800;letter-spacing:0.12em;color:#0a2b1c;margin-bottom:16px"></div>
+      <a id="spinWaBtn" href="#" target="_blank" rel="noopener" style="display:block;padding:14px;background:#25d366;color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;margin-bottom:10px">💬 Usar mi descuento por WhatsApp</a>
+      <button onclick="closeSpinWheel()" style="background:none;border:none;color:#aaa;font-size:13px;cursor:pointer;text-decoration:underline">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Only show once per device
+  try { if (localStorage.getItem('rr_spin_done')) return; } catch(e) {}
+
+  var WA = '34671276483';
+
+  // Wheel segments: label, color, code, waText, weight
+  var SEGMENTS = [
+    { label: '5% DTO',     color: '#0a2b1c', code: 'ROYAL5',   wa: 'Hola, tengo el código ROYAL5 (5% dto)', weight: 25 },
+    { label: '5% DTO',     color: '#1a5c3a', code: 'ROYAL5',   wa: 'Hola, tengo el código ROYAL5 (5% dto)', weight: 25 },
+    { label: '5% DTO',     color: '#0a2b1c', code: 'ROYAL5',   wa: 'Hola, tengo el código ROYAL5 (5% dto)', weight: 20 },
+    { label: '10% DTO',    color: '#c8a84b', code: 'ROYAL10',  wa: 'Hola, tengo el código ROYAL10 (10% dto)', weight: 12 },
+    { label: '5% DTO',     color: '#1a5c3a', code: 'ROYAL5',   wa: 'Hola, tengo el código ROYAL5 (5% dto)', weight: 10 },
+    { label: 'ENVÍO
+GRATIS', color: '#2d7a50', code: 'ROYALSHIP', wa: 'Hola, tengo el código ROYALSHIP (envío gratis)', weight: 5 },
+    { label: '5% DTO',     color: '#0a2b1c', code: 'ROYAL5',   wa: 'Hola, tengo el código ROYAL5 (5% dto)', weight: 2 },
+    { label: '15% DTO',    color: '#a07830', code: 'ROYAL15',  wa: 'Hola, tengo el código ROYAL15 (15% dto)', weight: 1 },
+  ];
+
+  // Draw wheel
+  function drawWheel(rotationRad) {
+    var canvas = document.getElementById('spinCanvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var cx = 140, cy = 140, r = 136;
+    var total = SEGMENTS.length;
+    var arc = (2 * Math.PI) / total;
+    ctx.clearRect(0, 0, 280, 280);
+    for (var i = 0; i < total; i++) {
+      var start = rotationRad + i * arc;
+      var end = start + arc;
+      // Slice
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, start, end);
+      ctx.closePath();
+      ctx.fillStyle = SEGMENTS[i].color;
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      // Label
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(start + arc / 2);
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 13px Arial, sans-serif';
+      var lines = SEGMENTS[i].label.split('\n');
+      if (lines.length === 1) {
+        ctx.fillText(lines[0], r - 10, 5);
+      } else {
+        ctx.fillText(lines[0], r - 10, -4);
+        ctx.fillText(lines[1], r - 10, 12);
+      }
+      ctx.restore();
+    }
+    // Centre circle
+    ctx.beginPath();
+    ctx.arc(cx, cy, 22, 0, 2 * Math.PI);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+    ctx.strokeStyle = '#c8a84b';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    // RR text
+    ctx.fillStyle = '#0a2b1c';
+    ctx.font = 'bold 12px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('RR', cx, cy + 4);
+  }
+
+  // Pick winning segment (weighted, almost always 5%)
+  function pickSegment() {
+    var totalW = SEGMENTS.reduce(function(s, seg) { return s + seg.weight; }, 0);
+    var r = Math.random() * totalW;
+    var cum = 0;
+    for (var i = 0; i < SEGMENTS.length; i++) {
+      cum += SEGMENTS[i].weight;
+      if (r < cum) return i;
+    }
+    return 0;
+  }
+
+  var currentRot = 0;
+  var spinning = false;
+  var winnerIdx = 0;
+
+  window.startSpin = function() {
+    var wa = document.getElementById('spinWa').value.trim().replace(/\D/g,'');
+    if (wa.length < 9) {
+      document.getElementById('spinWa').style.borderColor = '#e00';
+      document.getElementById('spinWa').placeholder = 'Introduce un número válido';
+      return;
+    }
+    document.getElementById('spinStep1').style.display = 'none';
+    document.getElementById('spinStep2').style.display = 'block';
+    drawWheel(0);
+  };
+
+  window.doSpin = function() {
+    if (spinning) return;
+    spinning = true;
+    document.getElementById('spinBtn').disabled = true;
+    document.getElementById('spinBtn').textContent = '¡Girando...';
+
+    winnerIdx = pickSegment();
+    var total = SEGMENTS.length;
+    var arc = (2 * Math.PI) / total;
+    // Calculate rotation so winning segment ends under pointer (top = -π/2)
+    // Pointer is at top; segment i spans from i*arc to (i+1)*arc after rotation
+    // We want the middle of winnerIdx under the pointer
+    var targetAngle = -(winnerIdx * arc + arc / 2);  // negative = rotate wheel clockwise
+    // Add several full rotations for effect
+    var fullSpins = (5 + Math.floor(Math.random() * 3)) * 2 * Math.PI;
+    var finalRot = targetAngle - fullSpins;
+
+    var startTime = null;
+    var startRot = currentRot;
+    var duration = 4500; // ms
+
+    function easeOut(t) {
+      return 1 - Math.pow(1 - t, 4);
+    }
+
+    function animate(ts) {
+      if (!startTime) startTime = ts;
+      var elapsed = ts - startTime;
+      var progress = Math.min(elapsed / duration, 1);
+      currentRot = startRot + (finalRot - startRot) * easeOut(progress);
+      drawWheel(currentRot);
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        spinning = false;
+        showResult();
+      }
+    }
+    requestAnimationFrame(animate);
+  };
+
+  function showResult() {
+    var seg = SEGMENTS[winnerIdx];
+    document.getElementById('spinStep2').style.display = 'none';
+    document.getElementById('spinStep3').style.display = 'block';
+
+    var isShip = seg.code === 'ROYALSHIP';
+    var is15 = seg.code === 'ROYAL15';
+    document.getElementById('spinEmoji').textContent = is15 ? '🏆' : isShip ? '📦' : '🎉';
+    document.getElementById('spinTitle').textContent = is15 ? '¡Premio máximo!' : isShip ? '¡Envío gratis!' : '¡Enhorabuena!';
+    document.getElementById('spinDesc').textContent = isShip
+      ? 'Tienes envío gratis en tu próximo pedido.'
+      : 'Tienes un ' + seg.label + ' en tu próximo reloj.';
+    document.getElementById('spinCode').textContent = seg.code;
+
+    var waMsg = encodeURIComponent(seg.wa);
+    document.getElementById('spinWaBtn').href = 'https://wa.me/' + WA + '?text=' + waMsg;
+
+    try { localStorage.setItem('rr_spin_done', '1'); } catch(e) {}
+  }
+
+  window.closeSpinWheel = function() {
+    var el = document.getElementById('spinOverlay');
+    if (el) { el.style.display = 'none'; }
+    try { localStorage.setItem('rr_spin_done', '1'); } catch(e) {}
+  };
+
+  // Show after 3 seconds
+  setTimeout(function() {
+    var el = document.getElementById('spinOverlay');
+    if (el) {
+      el.style.display = 'flex';
+      drawWheel(0);
+    }
+  }, 3000);
+})();
+</script>
 
 </body></html>
