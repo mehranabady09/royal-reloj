@@ -2907,6 +2907,7 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     }
   }
 
+  var _dingCount = 0;
   function showNext() {
     if (qi >= queue.length) { queue = shuffle(activities); qi = 0; }
     var a = queue[qi++];
@@ -2924,7 +2925,8 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     popup.classList.remove('ap-show');
     void popup.offsetWidth;
     popup.classList.add('ap-show');
-    playDing();
+    _dingCount++;
+    if (_dingCount % 10 === 0) { playDing(); }
     setTimeout(function() { popup.classList.remove('ap-show'); }, 5000);
   }
 
@@ -2959,13 +2961,13 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     <!-- Step 1: Wheel visible + WhatsApp input below -->
     <div id="spinStep1">
       <h2 style="font-family:Georgia,serif;font-size:20px;color:#0a2b1c;margin:0 0 4px">🎡 ¡Gira y gana!</h2>
-      <p style="font-size:13px;color:#777;margin:0 0 10px">Introduce tu número y gira para obtener tu descuento</p>
+      <p style="font-size:13px;color:#777;margin:0 0 10px">Gira la ruleta para obtener tu descuento exclusivo</p>
       <!-- Wheel always visible on step 1 -->
       <div style="position:relative;display:inline-block;margin-bottom:10px">
         <div style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:20px solid #c8a84b;z-index:2;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.4))"></div>
         <canvas id="spinCanvas" width="520" height="520" style="border-radius:50%;display:block;width:260px;height:260px"></canvas>
       </div>
-      <input id="spinWa" type="tel" placeholder="Tu número de WhatsApp (ej: 612345678)" style="width:100%;box-sizing:border-box;padding:12px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:15px;margin-bottom:10px;outline:none" />
+      <input id="spinWa" type="tel" placeholder="Tu WhatsApp (opcional)" style="width:100%;box-sizing:border-box;padding:12px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:15px;margin-bottom:10px;outline:none" />
       <button onclick="startSpin()" style="width:100%;padding:13px;background:linear-gradient(135deg,#c8a84b,#a07830);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:800;cursor:pointer;letter-spacing:0.03em">🎯 ¡GIRAR AHORA!</button>
       <p style="font-size:11px;color:#bbb;margin:8px 0 0">Sin spam. Solo tu descuento exclusivo.</p>
     </div>
@@ -3148,11 +3150,6 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
 
   window.startSpin = function() {
     var wa = document.getElementById('spinWa').value.trim().replace(/\D/g,'');
-    if (wa.length < 9) {
-      document.getElementById('spinWa').style.borderColor = '#e00';
-      document.getElementById('spinWa').placeholder = 'Introduce un número válido';
-      return;
-    }
     // Stop idle animation and do the real spin in place
     if (idleAnimId) { cancelAnimationFrame(idleAnimId); idleAnimId = null; }
     var btn = document.querySelector('#spinStep1 button:last-of-type');
