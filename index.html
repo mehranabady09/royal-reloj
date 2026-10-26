@@ -1137,6 +1137,88 @@ footer {
   .wa-float { display: flex; }
 }
 
+/* ── Activity popup ──────────────────────────────────────────── */
+#activityPopup {
+  position: fixed;
+  bottom: 80px;
+  left: 16px;
+  z-index: 9999;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 12px 14px 12px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 300px;
+  width: calc(100vw - 32px);
+  border-left: 4px solid var(--green);
+  transform: translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), opacity 0.35s ease;
+}
+#activityPopup.ap-show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.ap-img {
+  font-size: 28px;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: var(--cream);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ap-body { flex: 1; min-width: 0; }
+.ap-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ap-sub {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ap-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #aaa;
+  font-size: 11px;
+  padding: 0;
+  flex-shrink: 0;
+  line-height: 1;
+}
+@media (min-width: 641px) {
+  #activityPopup { max-width: 320px; width: auto; bottom: 32px; }
+}
+
+/* ── Order counter in sale banner ────────────────────────────── */
+.orders-live {
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(0,0,0,0.3);
+  border-radius: 20px;
+  padding: 4px 10px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+@media (max-width: 640px) {
+  .orders-live { font-size: 11px; }
+}
+
 /* ── Reviews bar ─────────────────────────────────────────────── */
 .reviews-bar {
   background: var(--white);
@@ -1351,6 +1433,7 @@ footer {
     <span class="sale-tag">🖤 EARLY BLACK FRIDAY</span>
     <span class="sale-text">Descuento exclusivo antes que nadie</span>
     <div class="sale-countdown">
+      <span class="orders-live">🟢 <span id="orderCount">34</span> pedidos esta semana</span>
       <span class="sale-countdown-label">Termina en</span>
       <span class="sale-countdown-timer" id="saleTimer">23:59:47</span>
     </div>
@@ -2609,6 +2692,83 @@ window.addEventListener('scroll', () => {
   }
   tick();
   setInterval(tick, 1000);
+})();
+
+/* ── Activity popup notifications ─────────────────────────────── */
+(function() {
+  var activities = [
+    { name: 'Miguel', city: 'Madrid',     watch: 'Submariner Negro' },
+    { name: 'Carlos', city: 'Barcelona',  watch: 'GMT Batman' },
+    { name: 'Alejandro', city: 'Valencia', watch: 'Daytona Panda' },
+    { name: 'Pablo',  city: 'Sevilla',    watch: 'Royal Oak Azul' },
+    { name: 'Sergio', city: 'Bilbao',     watch: 'Nautilus Gris' },
+    { name: 'Javier', city: 'Zaragoza',   watch: 'Submariner Hulk' },
+    { name: 'David',  city: 'Málaga',     watch: 'Datejust Blanco' },
+    { name: 'Álvaro', city: 'Murcia',     watch: 'Santos Cartier' },
+    { name: 'Raúl',   city: 'Alicante',   watch: 'Submariner Date' },
+    { name: 'Iván',   city: 'Valladolid', watch: 'GMT Pepsi' },
+    { name: 'Luis',   city: 'Córdoba',    watch: 'Day-Date Gold' },
+    { name: 'Jorge',  city: 'Granada',    watch: 'AP Royal Oak' },
+    { name: 'Marcos', city: 'Vigo',       watch: 'Yacht-Master 40' },
+    { name: 'Rubén',  city: 'Oviedo',     watch: 'Submariner Kermit' },
+    { name: 'Adrián', city: 'Pamplona',   watch: 'Daytona Negro' },
+  ];
+
+  var minAgo = [2, 3, 4, 5, 7, 8, 11, 14, 17, 22];
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  // Build popup element
+  var popup = document.createElement('div');
+  popup.id = 'activityPopup';
+  popup.innerHTML = '<div class="ap-img">⌚</div><div class="ap-body"><div class="ap-title"></div><div class="ap-sub"></div></div><button class="ap-close" aria-label="Cerrar">✕</button>';
+  document.body.appendChild(popup);
+
+  var titleEl = popup.querySelector('.ap-title');
+  var subEl   = popup.querySelector('.ap-sub');
+  var closeBtn = popup.querySelector('.ap-close');
+  closeBtn.onclick = function() { popup.classList.remove('ap-show'); };
+
+  var queue = shuffle(activities);
+  var qi = 0;
+
+  function showNext() {
+    if (qi >= queue.length) { queue = shuffle(activities); qi = 0; }
+    var a = queue[qi++];
+    var mins = minAgo[Math.floor(Math.random() * minAgo.length)];
+    titleEl.textContent = a.name + ' de ' + a.city + ' acaba de pedir';
+    subEl.textContent   = '⌚ ' + a.watch + ' · hace ' + mins + ' min';
+    popup.classList.remove('ap-show');
+    void popup.offsetWidth; // reflow to restart animation
+    popup.classList.add('ap-show');
+    setTimeout(function() { popup.classList.remove('ap-show'); }, 5000);
+  }
+
+  // First popup after 8s, then every 22s
+  setTimeout(function() {
+    showNext();
+    setInterval(showNext, 22000);
+  }, 8000);
+
+  // Order counter: start at a random number between 28-47, tick up occasionally
+  var count = Math.floor(Math.random() * 20) + 28;
+  var el = document.getElementById('orderCount');
+  if (el) {
+    el.textContent = count;
+    setInterval(function() {
+      if (Math.random() < 0.3) {
+        count++;
+        el.textContent = count;
+      }
+    }, 90000); // every ~1.5 min, 30% chance to tick up
+  }
 })();
 </script>
 </body>
