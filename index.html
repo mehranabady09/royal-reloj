@@ -1065,8 +1065,11 @@ footer {
   border: 1px solid rgba(201,168,76,0.4);
 }
 .modal-price-pill .pill-label { font-size: 10px; color: var(--text-light); font-weight: 500; margin-bottom: 3px; }
-.modal-price-pill .pill-price { font-size: 18px; font-weight: 700; color: var(--green-dark); }
+.modal-price-pill .pill-price { font-size: 18px; font-weight: 700; color: var(--green-dark); line-height: 1.3; }
 .modal-price-pill.sc .pill-price { color: #9a6f00; }
+.modal-price-pill .pill-price .price-orig { font-size: 11px; font-weight: 400; color: #999; text-decoration: line-through; display: block; margin-bottom: 1px; }
+.modal-price-pill .pill-price .price-sale { font-size: 18px; font-weight: 700; color: #e00010; }
+.modal-price-pill.sc .pill-price .price-sale { color: #9a6f00; }
 .modal-wa-btn {
   display: flex;
   align-items: center;
@@ -1091,24 +1094,26 @@ footer {
 @media (max-width: 640px) {
   .modal-box {
     grid-template-columns: 1fr;
-    grid-template-rows: 280px 1fr;
-    height: 92vh;
-    max-height: 92vh;
-    border-radius: 12px;
+    grid-template-rows: 58vh 1fr;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
   }
   .modal-gallery {
-    border-radius: 12px 12px 0 0;
-    grid-template-rows: 1fr 68px;
+    border-radius: 0;
+    grid-template-rows: 1fr 72px;
   }
   .modal-main-img { overflow: hidden; }
   .modal-thumbs { border-radius: 0; }
+  .modal-thumb { width: 52px; height: 52px; }
   .modal-info {
-    padding: 20px 16px 16px;
+    padding: 16px 16px 24px;
     overflow-y: auto;
     height: 100%;
   }
-  .modal-name { font-size: 22px; }
+  .modal-name { font-size: 20px; }
   .modal-specs { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .modal-close { top: 12px; right: 12px; width: 36px; height: 36px; font-size: 18px; }
 }
 
 /* ── Floating WhatsApp button ────────────────────────────────── */
@@ -1238,8 +1243,8 @@ footer {
 <!-- ── SALE BANNER ─────────────────────────────────────────────────── -->
 <div class="sale-banner" id="saleBanner">
   <div class="sale-banner-inner">
-    <span class="sale-tag">🔥 OFERTA FLASH</span>
-    <span class="sale-text">Descuento especial en toda la colección</span>
+    <span class="sale-tag">🖤 EARLY BLACK FRIDAY</span>
+    <span class="sale-text">Descuento exclusivo antes que nadie</span>
     <div class="sale-countdown">
       <span class="sale-countdown-label">Termina en</span>
       <span class="sale-countdown-timer" id="saleTimer">23:59:47</span>
@@ -2400,11 +2405,11 @@ window.addEventListener('scroll', () => {
       var valEl   = row.querySelector('.price-val');
       if (!labelEl || !valEl) return;
       var label = labelEl.textContent.trim();
-      var val   = valEl.textContent.trim();
+      var valHTML = valEl.innerHTML.trim();
       var isSCrow = row.classList.contains('sc-row');
       var pill = document.createElement('div');
       pill.className = 'modal-price-pill' + (isSCrow ? ' sc' : '');
-      pill.innerHTML = '<div class="pill-label">' + label + '</div><div class="pill-price">' + val + '</div>';
+      pill.innerHTML = '<div class="pill-label">' + label + '</div><div class="pill-price">' + valHTML + '</div>';
       grid.appendChild(pill);
     });
 
