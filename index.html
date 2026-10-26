@@ -132,14 +132,15 @@
 
 /* ---- Reset & Base ---- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; background: var(--green-dark); }
+html { scroll-behavior: smooth; background: #0f2318; }
 body {
   font-family: var(--font-sans);
-  background: var(--green-dark);
+  background: #0f2318;
   color: var(--text);
   font-size: 15px;
   line-height: 1.6;
   overflow-x: hidden;
+  min-height: 100vh;
 }
 img { max-width: 100%; display: block; }
 a { text-decoration: none; color: inherit; }
@@ -725,18 +726,7 @@ footer {
   position: relative;
   padding: 56px 24px 32px;
 }
-/* Extend dark green below footer for iOS overscroll */
-footer::after {
-  content: '';
-  display: block;
-  position: absolute;
-  bottom: -200px;
-  left: 0;
-  right: 0;
-  height: 200px;
-  background: var(--green-dark);
-  pointer-events: none;
-}
+/* Remove old footer::after — handled by html/body background */
 .footer-inner {
   max-width: 1280px;
   margin: 0 auto;
