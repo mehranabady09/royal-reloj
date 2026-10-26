@@ -838,7 +838,7 @@ footer {
   overflow: hidden;
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   box-shadow: 0 24px 80px rgba(0,0,0,0.5);
   animation: modal-in 0.25s ease;
 }
@@ -871,6 +871,7 @@ footer {
   flex-direction: column;
   overflow: hidden;
   height: 100%;
+  min-width: 0;
 }
 .modal-main-img {
   flex: 1;
@@ -880,15 +881,15 @@ footer {
   position: relative;
   overflow: hidden;
   min-height: 0;
+  min-width: 0;
 }
 .modal-main-img img {
+  display: block;
   max-width: 100%;
   max-height: 100%;
   width: auto;
   height: auto;
   object-fit: contain;
-  display: block;
-  border-radius: 0;
 }
 .modal-placeholder {
   display: flex;
@@ -953,6 +954,7 @@ footer {
   gap: 0;
   overflow-y: auto;
   height: 100%;
+  min-width: 0;
   box-sizing: border-box;
 }
 .modal-brand-tag {
