@@ -92,8 +92,8 @@ header {
   gap: 10px;
 }
 .logo-icon {
-  width: 42px;
-  height: 42px;
+  width: 54px;
+  height: 54px;
   background: var(--gold);
   clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
   flex-shrink: 0;
@@ -103,8 +103,8 @@ header {
   flex-direction: column;
   line-height: 1;
 }
-.logo-text .brand { font-family: var(--font-serif); font-size: 20px; color: var(--white); font-weight: 700; letter-spacing: 0.05em; }
-.logo-text .sub { font-size: 9px; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 2px; }
+.logo-text .brand { font-family: var(--font-serif); font-size: 26px; color: var(--white); font-weight: 700; letter-spacing: 0.05em; }
+.logo-text .sub { font-size: 10px; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 3px; }
 
 nav { display: flex; align-items: center; gap: 4px; }
 nav a {
@@ -156,13 +156,19 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,0.06); }
 .hero-bg {
   position: absolute;
   inset: 0;
+  /* =====================================================
+     HERO BACKGROUND PHOTO
+     To add a photo: replace the url() below with your image URL
+     Example: url('https://raw.githubusercontent.com/mehranabady09/royal-reloj/main/hero.jpg')
+     ===================================================== */
   background:
-    linear-gradient(105deg, rgba(10,24,16,0.96) 0%, rgba(10,24,16,0.7) 55%, rgba(10,24,16,0.3) 100%),
-    /* REPLACE: Add hero background image here */
-    radial-gradient(ellipse at 70% 50%, #1a4028 0%, #0a1810 100%);
+    linear-gradient(105deg, rgba(10,24,16,0.92) 0%, rgba(10,24,16,0.65) 55%, rgba(10,24,16,0.25) 100%),
+    var(--hero-bg-image, radial-gradient(ellipse at 70% 50%, #1a4028 0%, #0a1810 100%));
   background-size: cover;
   background-position: center;
 }
+/* Set this variable to your image URL to use a hero photo */
+:root { --hero-bg-image: radial-gradient(ellipse at 70% 50%, #1a4028 0%, #0a1810 100%); }
 /* Decorative watch circles */
 .hero-deco {
   position: absolute;
@@ -1265,6 +1271,16 @@ footer {
       <p class="section-desc" style="color:rgba(255,255,255,0.6);">Todos nuestros relojes pasan por un control técnico completo antes de llegar a tus manos.</p>
     </div>
     <div style="display:flex;flex-direction:column;align-items:center;gap:32px;">
+
+      <!-- SERVICE PHOTO — replace the placeholder below with an <img> tag -->
+      <!-- Example: <img src="YOUR_IMAGE_URL" alt="Servicio de relojería" style="width:100%;max-width:700px;border-radius:14px;border:1px solid rgba(201,168,76,0.3);object-fit:cover;max-height:380px;"> -->
+      <div id="service-photo-slot" style="width:100%;max-width:700px;border-radius:14px;border:2px dashed rgba(201,168,76,0.35);overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:200px;background:rgba(255,255,255,0.03);">
+        <div style="text-align:center;padding:32px;color:rgba(201,168,76,0.5);">
+          <div style="font-size:40px;margin-bottom:10px;">📷</div>
+          <div style="font-size:13px;letter-spacing:0.06em;text-transform:uppercase;">AÑADIR FOTO DEL SERVICIO</div>
+        </div>
+      </div>
+
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;width:100%;max-width:900px;">
         <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:24px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;">
           <div style="font-size:28px;">⚙️</div>
