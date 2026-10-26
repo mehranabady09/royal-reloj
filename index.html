@@ -2991,7 +2991,7 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
 <script>
 (function() {
   // Only show once per device (check before showing)
-  try { if (localStorage.getItem('rr_spin_v3') === 'done') return; } catch(e) {}
+  try { if (localStorage.getItem('rr_spin_v4') === 'done') return; } catch(e) {}
 
   var WA = '34671276483';
 
@@ -3002,8 +3002,7 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     { label: '5% DTO',     color: '#0a2b1c', code: 'ROYAL5',   wa: 'Hola, tengo el código ROYAL5 (5% dto)', weight: 20 },
     { label: '10% DTO',    color: '#c8a84b', code: 'ROYAL10',  wa: 'Hola, tengo el código ROYAL10 (10% dto)', weight: 12 },
     { label: '5% DTO',     color: '#1a5c3a', code: 'ROYAL5',   wa: 'Hola, tengo el código ROYAL5 (5% dto)', weight: 10 },
-    { label: 'ENVÍO
-GRATIS', color: '#2d7a50', code: 'ROYALSHIP', wa: 'Hola, tengo el código ROYALSHIP (envío gratis)', weight: 5 },
+    { label: 'ENVÍO GRATIS', color: '#2d7a50', code: 'ROYALSHIP', wa: 'Hola, tengo el código ROYALSHIP (envío gratis)', weight: 5 },
     { label: '5% DTO',     color: '#0a2b1c', code: 'ROYAL5',   wa: 'Hola, tengo el código ROYAL5 (5% dto)', weight: 2 },
     { label: '15% DTO',    color: '#a07830', code: 'ROYAL15',  wa: 'Hola, tengo el código ROYAL15 (15% dto)', weight: 1 },
   ];
@@ -3147,13 +3146,13 @@ GRATIS', color: '#2d7a50', code: 'ROYALSHIP', wa: 'Hola, tengo el código ROYALS
     var waMsg = encodeURIComponent(seg.wa);
     document.getElementById('spinWaBtn').href = 'https://wa.me/' + WA + '?text=' + waMsg;
 
-    try { localStorage.setItem('rr_spin_v3', 'done'); } catch(e) {}
+    try { localStorage.setItem('rr_spin_v4', 'done'); } catch(e) {}
   }
 
   window.closeSpinWheel = function() {
     var el = document.getElementById('spinOverlay');
     if (el) { el.style.display = 'none'; }
-    try { localStorage.setItem('rr_spin_v3', 'done'); } catch(e) {}
+    try { localStorage.setItem('rr_spin_v4', 'done'); } catch(e) {}
   };
 
   // Show after 4 seconds (wait for page to settle)
@@ -3165,9 +3164,9 @@ GRATIS', color: '#2d7a50', code: 'ROYALSHIP', wa: 'Hola, tengo el código ROYALS
     }
   }
   if (document.readyState === 'complete') {
-    setTimeout(showWheel, 4000);
+    setTimeout(showWheel, 2000);
   } else {
-    window.addEventListener('load', function() { setTimeout(showWheel, 4000); });
+    window.addEventListener('load', function() { setTimeout(showWheel, 2000); });
   }
 })();
 </script>
