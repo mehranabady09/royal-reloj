@@ -2990,7 +2990,7 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
 <script>
 (function() {
   // Only show once per device
-  try { if (localStorage.getItem('rr_spin_done')) return; } catch(e) {}
+  try { if (localStorage.getItem('rr_spin_v2')) return; } catch(e) {}
 
   var WA = '34671276483';
 
@@ -3146,23 +3146,28 @@ GRATIS', color: '#2d7a50', code: 'ROYALSHIP', wa: 'Hola, tengo el código ROYALS
     var waMsg = encodeURIComponent(seg.wa);
     document.getElementById('spinWaBtn').href = 'https://wa.me/' + WA + '?text=' + waMsg;
 
-    try { localStorage.setItem('rr_spin_done', '1'); } catch(e) {}
+    try { localStorage.setItem('rr_spin_v2', '1'); } catch(e) {}
   }
 
   window.closeSpinWheel = function() {
     var el = document.getElementById('spinOverlay');
     if (el) { el.style.display = 'none'; }
-    try { localStorage.setItem('rr_spin_done', '1'); } catch(e) {}
+    try { localStorage.setItem('rr_spin_v2', '1'); } catch(e) {}
   };
 
-  // Show after 3 seconds
-  setTimeout(function() {
+  // Show after 4 seconds (wait for page to settle)
+  function showWheel() {
     var el = document.getElementById('spinOverlay');
     if (el) {
       el.style.display = 'flex';
       drawWheel(0);
     }
-  }, 3000);
+  }
+  if (document.readyState === 'complete') {
+    setTimeout(showWheel, 4000);
+  } else {
+    window.addEventListener('load', function() { setTimeout(showWheel, 4000); });
+  }
 })();
 </script>
 
