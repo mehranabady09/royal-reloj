@@ -130,7 +130,7 @@
 
 /* ---- Reset & Base ---- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; overflow-x: hidden; }
+html { scroll-behavior: smooth; overflow-x: hidden; background: var(--green-dark); overscroll-behavior: none; }
 body {
   font-family: var(--font-sans);
   background: var(--cream);
@@ -138,6 +138,7 @@ body {
   font-size: 15px;
   line-height: 1.6;
   overflow-x: hidden;
+  overscroll-behavior: none;
 }
 img { max-width: 100%; display: block; }
 a { text-decoration: none; color: inherit; }
@@ -2967,9 +2968,7 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
         <div style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:20px solid #c8a84b;z-index:2;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.4))"></div>
         <canvas id="spinCanvas" width="520" height="520" style="border-radius:50%;display:block;width:260px;height:260px"></canvas>
       </div>
-      <input id="spinWa" type="tel" placeholder="Tu WhatsApp (opcional)" style="width:100%;box-sizing:border-box;padding:12px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:15px;margin-bottom:10px;outline:none" />
       <button onclick="startSpin()" style="width:100%;padding:13px;background:linear-gradient(135deg,#c8a84b,#a07830);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:800;cursor:pointer;letter-spacing:0.03em">🎯 ¡GIRAR AHORA!</button>
-      <p style="font-size:11px;color:#bbb;margin:8px 0 0">Sin spam. Solo tu descuento exclusivo.</p>
     </div>
 
     <!-- Step 2: hidden (wheel spins on step 1 now) -->
@@ -3149,7 +3148,6 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
   }
 
   window.startSpin = function() {
-    var wa = document.getElementById('spinWa').value.trim().replace(/\D/g,'');
     // Stop idle animation and do the real spin in place
     if (idleAnimId) { cancelAnimationFrame(idleAnimId); idleAnimId = null; }
     var btn = document.querySelector('#spinStep1 button:last-of-type');
