@@ -1164,15 +1164,21 @@ footer {
   pointer-events: auto;
 }
 .ap-img {
-  font-size: 28px;
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   background: var(--cream);
-  border-radius: 50%;
+  border-radius: 10px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.ap-watch-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .ap-body { flex: 1; min-width: 0; }
 .ap-title {
@@ -2697,21 +2703,21 @@ window.addEventListener('scroll', () => {
 /* ── Activity popup notifications ─────────────────────────────── */
 (function() {
   var activities = [
-    { name: 'Miguel', city: 'Madrid',     watch: 'Submariner Negro' },
-    { name: 'Carlos', city: 'Barcelona',  watch: 'GMT Batman' },
-    { name: 'Alejandro', city: 'Valencia', watch: 'Daytona Panda' },
-    { name: 'Pablo',  city: 'Sevilla',    watch: 'Royal Oak Azul' },
-    { name: 'Sergio', city: 'Bilbao',     watch: 'Nautilus Gris' },
-    { name: 'Javier', city: 'Zaragoza',   watch: 'Submariner Hulk' },
-    { name: 'David',  city: 'Málaga',     watch: 'Datejust Blanco' },
-    { name: 'Álvaro', city: 'Murcia',     watch: 'Santos Cartier' },
-    { name: 'Raúl',   city: 'Alicante',   watch: 'Submariner Date' },
-    { name: 'Iván',   city: 'Valladolid', watch: 'GMT Pepsi' },
-    { name: 'Luis',   city: 'Córdoba',    watch: 'Day-Date Gold' },
-    { name: 'Jorge',  city: 'Granada',    watch: 'AP Royal Oak' },
-    { name: 'Marcos', city: 'Vigo',       watch: 'Yacht-Master 40' },
-    { name: 'Rubén',  city: 'Oviedo',     watch: 'Submariner Kermit' },
-    { name: 'Adrián', city: 'Pamplona',   watch: 'Daytona Negro' },
+    { name: 'Miguel',    city: 'Madrid',     watch: 'Submariner Negro',      slug: 'submariner-negro' },
+    { name: 'Carlos',    city: 'Barcelona',  watch: 'GMT Batman',            slug: 'gmt-ii-batman' },
+    { name: 'Alejandro', city: 'Valencia',   watch: 'Daytona Panda',         slug: 'daytona-panda' },
+    { name: 'Pablo',     city: 'Sevilla',    watch: 'Royal Oak Azul',        slug: 'royal-oak-blue' },
+    { name: 'Sergio',    city: 'Bilbao',     watch: 'Nautilus Azul',         slug: 'nautilus-blue' },
+    { name: 'Javier',    city: 'Zaragoza',   watch: 'Submariner Hulk',       slug: 'submariner-hulk' },
+    { name: 'David',     city: 'Málaga',     watch: 'Datejust Negro',        slug: 'datejust-negro' },
+    { name: 'Álvaro',    city: 'Murcia',     watch: 'Santos Dos Tonos',      slug: 'santos-dos-tonos' },
+    { name: 'Raúl',      city: 'Alicante',   watch: 'Submariner Date Negro', slug: 'submariner-date-negro' },
+    { name: 'Iván',      city: 'Valladolid', watch: 'GMT Pepsi',             slug: 'gmt-ii-pepsi' },
+    { name: 'Luis',      city: 'Córdoba',    watch: 'Day-Date Oro',          slug: 'day-date-oro' },
+    { name: 'Jorge',     city: 'Granada',    watch: 'Royal Oak Skeleton',    slug: 'royal-oak-skeleton-negro' },
+    { name: 'Marcos',    city: 'Vigo',       watch: 'Yacht-Master Everose',  slug: 'yacht-master-everose' },
+    { name: 'Rubén',     city: 'Oviedo',     watch: 'Submariner Kermit',     slug: 'submariner-kermit' },
+    { name: 'Adrián',    city: 'Pamplona',   watch: 'Daytona Negro',         slug: 'daytona-negro' },
   ];
 
   var minAgo = [2, 3, 4, 5, 7, 8, 11, 14, 17, 22];
@@ -2728,11 +2734,12 @@ window.addEventListener('scroll', () => {
   // Build popup element
   var popup = document.createElement('div');
   popup.id = 'activityPopup';
-  popup.innerHTML = '<div class="ap-img">⌚</div><div class="ap-body"><div class="ap-title"></div><div class="ap-sub"></div></div><button class="ap-close" aria-label="Cerrar">✕</button>';
+  popup.innerHTML = '<div class="ap-img"><img class="ap-watch-img" src="" alt=""></div><div class="ap-body"><div class="ap-title"></div><div class="ap-sub"></div></div><button class="ap-close" aria-label="Cerrar">✕</button>';
   document.body.appendChild(popup);
 
-  var titleEl = popup.querySelector('.ap-title');
-  var subEl   = popup.querySelector('.ap-sub');
+  var titleEl  = popup.querySelector('.ap-title');
+  var subEl    = popup.querySelector('.ap-sub');
+  var imgEl    = popup.querySelector('.ap-watch-img');
   var closeBtn = popup.querySelector('.ap-close');
   closeBtn.onclick = function() { popup.classList.remove('ap-show'); };
 
@@ -2743,10 +2750,18 @@ window.addEventListener('scroll', () => {
     if (qi >= queue.length) { queue = shuffle(activities); qi = 0; }
     var a = queue[qi++];
     var mins = minAgo[Math.floor(Math.random() * minAgo.length)];
+    var photos = PHOTOS[a.slug];
+    if (photos && photos.length) {
+      imgEl.src = photos[0];
+      imgEl.alt = a.watch;
+      imgEl.style.display = 'block';
+    } else {
+      imgEl.style.display = 'none';
+    }
     titleEl.textContent = a.name + ' de ' + a.city + ' acaba de pedir';
     subEl.textContent   = '⌚ ' + a.watch + ' · hace ' + mins + ' min';
     popup.classList.remove('ap-show');
-    void popup.offsetWidth; // reflow to restart animation
+    void popup.offsetWidth;
     popup.classList.add('ap-show');
     setTimeout(function() { popup.classList.remove('ap-show'); }, 5000);
   }
