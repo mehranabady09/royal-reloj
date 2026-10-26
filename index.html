@@ -130,7 +130,7 @@
 
 /* ---- Reset & Base ---- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; overflow-x: hidden; background: var(--green-dark); overscroll-behavior: none; }
+html { scroll-behavior: smooth; overflow-x: hidden; background: var(--green-dark); }
 body {
   font-family: var(--font-sans);
   background: var(--cream);
@@ -138,7 +138,6 @@ body {
   font-size: 15px;
   line-height: 1.6;
   overflow-x: hidden;
-  overscroll-behavior: none;
 }
 img { max-width: 100%; display: block; }
 a { text-decoration: none; color: inherit; }
@@ -721,7 +720,20 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,0.06); }
 footer {
   background: var(--green-dark);
   border-top: 1px solid rgba(201,168,76,0.2);
+  position: relative;
   padding: 56px 24px 32px;
+}
+/* Extend dark green below footer for iOS overscroll */
+footer::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: -200px;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: var(--green-dark);
+  pointer-events: none;
 }
 .footer-inner {
   max-width: 1280px;
