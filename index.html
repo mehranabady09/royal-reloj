@@ -2746,6 +2746,34 @@ window.addEventListener('scroll', () => {
   var queue = shuffle(activities);
   var qi = 0;
 
+  // Checkout ding using Web Audio API
+  function playDing() {
+    try {
+      var ctx = new (window.AudioContext || window.webkitAudioContext)();
+      // First tone - higher pitch
+      var o1 = ctx.createOscillator();
+      var g1 = ctx.createGain();
+      o1.connect(g1); g1.connect(ctx.destination);
+      o1.type = 'sine';
+      o1.frequency.setValueAtTime(1318, ctx.currentTime); // E6
+      g1.gain.setValueAtTime(0.35, ctx.currentTime);
+      g1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+      o1.start(ctx.currentTime);
+      o1.stop(ctx.currentTime + 0.5);
+      // Second tone - lower, slight delay
+      var o2 = ctx.createOscillator();
+      var g2 = ctx.createGain();
+      o2.connect(g2); g2.connect(ctx.destination);
+      o2.type = 'sine';
+      o2.frequency.setValueAtTime(1047, ctx.currentTime + 0.12); // C6
+      g2.gain.setValueAtTime(0, ctx.currentTime);
+      g2.gain.setValueAtTime(0.3, ctx.currentTime + 0.12);
+      g2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.7);
+      o2.start(ctx.currentTime + 0.12);
+      o2.stop(ctx.currentTime + 0.7);
+    } catch(e) {}
+  }
+
   function showNext() {
     if (qi >= queue.length) { queue = shuffle(activities); qi = 0; }
     var a = queue[qi++];
@@ -2763,6 +2791,7 @@ window.addEventListener('scroll', () => {
     popup.classList.remove('ap-show');
     void popup.offsetWidth;
     popup.classList.add('ap-show');
+    playDing();
     setTimeout(function() { popup.classList.remove('ap-show'); }, 5000);
   }
 
