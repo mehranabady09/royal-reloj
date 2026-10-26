@@ -1137,6 +1137,80 @@ footer {
   .wa-float { display: flex; }
 }
 
+/* ── Reviews bar ─────────────────────────────────────────────── */
+.reviews-bar {
+  background: var(--white);
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  padding: 14px 16px;
+}
+.reviews-bar-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.reviews-stars {
+  display: flex;
+  gap: 2px;
+}
+.reviews-stars .star {
+  color: #f5a623;
+  font-size: 20px;
+  line-height: 1;
+}
+.reviews-stars .star.half {
+  position: relative;
+  display: inline-block;
+  color: #ddd;
+}
+.reviews-stars .star.half::before {
+  content: '★';
+  position: absolute;
+  left: 0;
+  width: 50%;
+  overflow: hidden;
+  color: #f5a623;
+}
+.reviews-score {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--green-dark);
+  letter-spacing: -0.02em;
+}
+.reviews-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(0,0,0,0.12);
+}
+.reviews-text {
+  font-size: 14px;
+  color: var(--text-dark);
+  letter-spacing: 0.01em;
+}
+.reviews-text strong {
+  color: var(--green-dark);
+  font-weight: 700;
+}
+.reviews-verified {
+  font-size: 12px;
+  color: #2e7d32;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+@media (max-width: 640px) {
+  .reviews-bar { padding: 12px 16px; }
+  .reviews-bar-inner { gap: 10px; }
+  .reviews-stars .star { font-size: 18px; }
+  .reviews-score { font-size: 20px; }
+  .reviews-text { font-size: 13px; }
+  .reviews-verified { font-size: 11px; }
+  .reviews-divider { height: 16px; }
+}
+
 </style>
 </head>
 <body>
@@ -1222,6 +1296,20 @@ footer {
     <div class="trust-item"><span class="icon">💎</span> Cristal Zafiro</div>
     <div class="trust-item"><span class="icon">⚙️</span> Acero 904L</div>
     <div class="trust-item"><span class="icon">📦</span> Caja y Documentos Disponibles</div>
+  </div>
+</div>
+
+<!-- REVIEWS BAR -->
+<div class="reviews-bar">
+  <div class="reviews-bar-inner">
+    <div class="reviews-stars">
+      <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star half">★</span>
+    </div>
+    <div class="reviews-score">4,9</div>
+    <div class="reviews-divider"></div>
+    <div class="reviews-text"><strong>+1.000</strong> clientes satisfechos</div>
+    <div class="reviews-divider"></div>
+    <div class="reviews-verified">✔ Reseñas verificadas</div>
   </div>
 </div>
 
