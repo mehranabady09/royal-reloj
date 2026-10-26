@@ -867,18 +867,13 @@ footer {
   position: relative;
   background: linear-gradient(135deg, #e8e4db 0%, #d5d0c6 100%);
   border-radius: 16px 0 0 16px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 1fr 80px;
   overflow: hidden;
-  height: 100%;
-  min-width: 0;
 }
 .modal-main-img {
-  flex: 1;
   position: relative;
   overflow: hidden;
-  min-height: 0;
-  min-width: 0;
 }
 .modal-main-img img {
   position: absolute;
@@ -1046,10 +1041,9 @@ footer {
   }
   .modal-gallery {
     border-radius: 12px 12px 0 0;
-    height: 280px;
-    flex-shrink: 0;
+    grid-template-rows: 1fr 68px;
   }
-  .modal-main-img { min-height: 0; }
+  .modal-main-img { overflow: hidden; }
   .modal-thumbs { border-radius: 0; }
   .modal-info {
     padding: 20px 16px 16px;
