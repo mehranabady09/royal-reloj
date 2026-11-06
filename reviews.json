@@ -1,11 +1,40 @@
 {
-  "_como_añadir": "1) Sube la foto o el vídeo a la carpeta media/reviews/ (fotos .jpg de menos de 400 KB, vídeos .mp4 verticales de menos de 10 MB). 2) Copia uno de los bloques de _ejemplo_foto / _ejemplo_video, pégalo dentro de la lista \"items\" (separa los bloques con una coma) y cambia los datos. 3) Guarda. El banner aparece solo en la web en cuanto hay al menos un bloque en \"items\". Solo reseñas y fotos reales de clientes.",
+  "_como_añadir": "1) Sube la foto o el vídeo a la carpeta media/reviews/ (fotos .jpg de menos de 400 KB, vídeos .mp4 verticales de menos de 10 MB). 2) Copia uno de los bloques de _ejemplo_foto / _ejemplo_video, pégalo dentro de la lista \"items\" (separa los bloques con una coma) y cambia los datos. 3) Guarda. Campos opcionales: stars (solo si el cliente puntuó), date, link (publicación de Instagram), verified (texto de verificación), focus (por ejemplo \"35% 50%\" para centrar la foto en el reloj). Solo reseñas y fotos reales de clientes.",
 
   "title": "Clientes reales",
   "subtitle": "Fotos, vídeos y opiniones de clientes que ya han recibido su pedido.",
   "instagram": "https://www.instagram.com/royal_reloj",
 
-  "items": [],
+  "items": [
+    {
+      "type": "photo",
+      "src": "media/reviews/daniel-g-royal-oak-chronograph.jpg",
+      "name": "Daniel G.",
+      "city": "Bilbao",
+      "watch": "Audemars Piguet Royal Oak Chronograph",
+      "verified": "Verificado por WhatsApp",
+      "text": "Tercer pedido ya. He comprado el Daytona Panda, el Day Date Oro y ahora el AP Chronograph. Cada vez mejor. Servicio muy profesional."
+    },
+    {
+      "type": "photo",
+      "src": "media/reviews/ana-m-submariner-negro.jpg",
+      "name": "Ana M.",
+      "city": "Sevilla",
+      "watch": "Rolex Submariner Negro",
+      "verified": "Verificado por WhatsApp",
+      "text": "Compré el submariner negro para mi marido y flipó. La atención por WhatsApp es rapidísima y el envío contrareembolso te da mucha confianza. 10/10."
+    },
+    {
+      "type": "photo",
+      "src": "media/reviews/carlos-m-daytona-tiffany.jpg",
+      "name": "Carlos M.",
+      "city": "Madrid",
+      "watch": "Rolex Daytona Tiffany",
+      "verified": "Verificado por WhatsApp",
+      "focus": "30% 50%",
+      "text": "Pedí el daytona tiffany y llegó en 24 horas. La calidad es increíble. Muy recomendable."
+    }
+  ],
 
   "_ejemplo_foto": {
     "type": "photo",
@@ -13,10 +42,12 @@
     "name": "Nombre del cliente",
     "city": "Ciudad",
     "watch": "Modelo del reloj",
-    "stars": 5,
     "text": "Aquí va la opinión del cliente, tal como la escribió.",
+    "stars": 5,
     "date": "2026-11-01",
-    "link": "https://www.instagram.com/p/CODIGO-DE-LA-PUBLICACION/"
+    "verified": "Verificado por WhatsApp",
+    "link": "https://www.instagram.com/p/CODIGO-DE-LA-PUBLICACION/",
+    "focus": "40% 50%"
   },
 
   "_ejemplo_video": {
@@ -26,8 +57,6 @@
     "name": "Nombre del cliente",
     "city": "Ciudad",
     "watch": "Modelo del reloj",
-    "stars": 5,
-    "text": "Aquí va la opinión del cliente.",
-    "date": "2026-11-01"
+    "text": "Aquí va la opinión del cliente."
   }
 }

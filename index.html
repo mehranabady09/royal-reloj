@@ -531,6 +531,7 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,0.06); }
 .proof-who { margin-top: auto; display: flex; flex-direction: column; gap: 3px; }
 .proof-name { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-dark); }
 .proof-meta { font-size: 12px; color: var(--text-light); }
+.proof-verified { font-size: 11px; font-weight: 600; color: var(--green-light); }
 .proof-watch {
   align-self: flex-start; margin-top: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
   color: var(--green); border: 1px solid rgba(201,168,76,0.7); background: var(--gold-pale);
@@ -3759,6 +3760,7 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     card.setAttribute('role', 'listitem');
 
     var media = h('div', 'proof-media');
+    var focusOk = typeof it.focus === 'string' && /^\d{1,3}%( \d{1,3}%)?$/.test(it.focus);
     if (isVideo) {
       var v = document.createElement('video');
       v.preload = 'metadata';
@@ -3782,6 +3784,7 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
       v.addEventListener('play', function () { pauseOthers(v); media.classList.add('playing'); });
       v.addEventListener('ended', function () { v.controls = false; media.classList.remove('playing'); });
       v.addEventListener('error', function () { drop(card); });
+      if (focusOk) v.style.objectPosition = it.focus;
       media.appendChild(v);
       media.appendChild(btn);
     } else {
@@ -3790,6 +3793,7 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
       img.decoding = 'async';
       img.alt = 'Cliente con su ' + (it.watch ? String(it.watch) : 'reloj') + (name ? ', ' + name : '');
       img.addEventListener('error', function () { drop(card); });
+      if (focusOk) img.style.objectPosition = it.focus;
       img.src = src;
       media.appendChild(img);
     }
@@ -3809,11 +3813,13 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     card.appendChild(media);
 
     var body = h('div', 'proof-body');
-    var n = Math.max(1, Math.min(5, Math.round(Number(it.stars) || 5)));
-    var stars = h('div', 'proof-stars', new Array(n + 1).join('★') + new Array(6 - n).join('☆'));
-    stars.setAttribute('role', 'img');
-    stars.setAttribute('aria-label', n + ' de 5 estrellas');
-    body.appendChild(stars);
+    if (Number(it.stars) > 0) {
+      var n = Math.max(1, Math.min(5, Math.round(Number(it.stars))));
+      var stars = h('div', 'proof-stars', new Array(n + 1).join('★') + new Array(6 - n).join('☆'));
+      stars.setAttribute('role', 'img');
+      stars.setAttribute('aria-label', n + ' de 5 estrellas');
+      body.appendChild(stars);
+    }
 
     var text = String(it.text || '').trim().replace(/^[“"]+|[”"]+$/g, '');
     if (text) {
@@ -3834,6 +3840,7 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     if (name) who.appendChild(h('div', 'proof-name', name));
     var meta = [it.city ? String(it.city) : '', fmtDate(it.date)].filter(Boolean).join(' · ');
     if (meta) who.appendChild(h('div', 'proof-meta', meta));
+    if (it.verified) who.appendChild(h('div', 'proof-verified', '✓ ' + String(it.verified)));
     if (it.watch) who.appendChild(h('div', 'proof-watch', String(it.watch)));
     body.appendChild(who);
     card.appendChild(body);
