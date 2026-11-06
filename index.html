@@ -3428,13 +3428,19 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     // Calculate rotation so winning segment ends under pointer (top = -π/2)
     // Pointer is at top; segment i spans from i*arc to (i+1)*arc after rotation
     // We want the middle of winnerIdx under the pointer
-    var targetAngle = -(winnerIdx * arc + arc / 2);  // negative = rotate wheel clockwise
-    // Add several full rotations for effect
+    // Canvas angles start at 3 o'clock and run clockwise; the pointer is at the TOP (-π/2).
+    // A point at angle φ sits in slice i when (φ - rotation) mod 2π is inside slice i,
+    // so the middle of the winning slice is under the pointer when:
+    //   rotation ≡ -π/2 - (winnerIdx*arc + arc/2)   (mod 2π)
+    var targetAngle = -Math.PI / 2 - (winnerIdx * arc + arc / 2);
+    // Add several full rotations for effect (always spin clockwise, ending exactly on targetAngle)
     var fullSpins = (5 + Math.floor(Math.random() * 3)) * 2 * Math.PI;
-    var finalRot = targetAngle - fullSpins;
+    var startRot = currentRot;
+    var twoPi = 2 * Math.PI;
+    var delta = (((targetAngle - startRot) % twoPi) + twoPi) % twoPi;
+    var finalRot = startRot + delta + fullSpins;
 
     var startTime = null;
-    var startRot = currentRot;
     var duration = 4500; // ms
 
     function easeOut(t) {
