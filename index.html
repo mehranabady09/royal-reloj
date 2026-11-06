@@ -631,7 +631,7 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,0.06); }
   background: var(--white);
   border-bottom: 2px solid var(--grey-light);
   position: sticky;
-  top: 68px;
+  top: calc(var(--header-h, 81px) - 1px); /* sits right under the sticky header, whatever its height */
   z-index: 900;
 }
 .brand-nav-inner {
@@ -1021,7 +1021,7 @@ footer {
   .trust-item:nth-child(n+4) { display: none; } /* keep top 3 on phone */
 
   /* — Brand sticky nav — */
-  .brand-nav { top: 60px; }
+  .brand-nav { top: calc(var(--header-h, 81px) - 1px); }
 
   /* — Sections — */
   .section { padding: 48px 16px; }
@@ -4246,4 +4246,18 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
 })();
 </script>
 
+<script>
+/* Keep the sticky brand bar glued right under the sticky header: --header-h = the header's real height */
+(function () {
+  var h = document.querySelector('header');
+  if (!h) return;
+  function set() { document.documentElement.style.setProperty('--header-h', Math.round(h.getBoundingClientRect().height) + 'px'); }
+  set();
+  window.addEventListener('resize', set);
+  window.addEventListener('orientationchange', set);
+  window.addEventListener('load', set);
+  if (window.ResizeObserver) new ResizeObserver(set).observe(h);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(set);
+})();
+</script>
 </body></html>
