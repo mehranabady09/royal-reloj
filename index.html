@@ -611,6 +611,12 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,0.06); }
   display: inline-block; background: #25d366; color: #fff; font-weight: 700; font-size: 14px;
   padding: 11px 18px; border-radius: 10px;
 }
+.rv-photo { margin-bottom: 10px; }
+.rv-photo label { margin-bottom: 4px; }
+.rv-photo input[type="file"] { width: 100%; font: 400 13px var(--font-sans); color: var(--text); }
+.rv-photo-prev { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+.rv-photo-prev img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; border: 1px solid #d8d3c4; }
+.rv-photo-prev button { background: none; border: 0; padding: 0; cursor: pointer; color: var(--green-light); font: 600 12px var(--font-sans); text-decoration: underline; }
 .rv-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 @media (max-width: 719px) {
   .proof-cta { padding: 6px 12px; font-size: 11.5px; }
@@ -1762,20 +1768,28 @@ footer {
         <button type="button" class="rv-star" data-v="4" aria-label="4 estrellas">★</button>
         <button type="button" class="rv-star" data-v="5" aria-label="5 estrellas">★</button>
       </div>
+      <div class="rv-photo" id="rvPhotoRow">
+        <label for="rvPhoto">Foto de tu reloj <small>(opcional)</small></label>
+        <input type="file" id="rvPhoto" accept="image/*">
+        <div class="rv-photo-prev" id="rvPhotoPrev" hidden>
+          <img id="rvPhotoImg" alt="Vista previa de tu foto">
+          <button type="button" id="rvPhotoRm">Quitar foto</button>
+        </div>
+      </div>
       <label>Tu opinión <textarea id="rvText" maxlength="600" placeholder="¿Qué tal el reloj, el envío y la atención?"></textarea><span class="rv-count" id="rvCount">0/600</span></label>
       <label>WhatsApp con el que hiciste el pedido <small>(opcional: solo para verificar tu compra, no se publica)</small> <input type="tel" id="rvPhone" inputmode="tel" autocomplete="tel" placeholder="Ej. 612 345 678"></label>
       <input type="text" id="rvHp" class="rv-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <label class="rv-consent"><input type="checkbox" id="rvConsent"> <span>Acepto que Royal Reloj publique mi nombre, ciudad y opinión en esta web.</span></label>
+      <label class="rv-consent"><input type="checkbox" id="rvConsent"> <span>Acepto que Royal Reloj publique mi nombre, ciudad, opinión y foto (si la añado) en esta web.</span></label>
       <details>
         <summary>Información sobre protección de datos</summary>
-        <p>Responsable: Royal Reloj (Madrid). Finalidad: revisar tu opinión y, con tu consentimiento, publicarla en esta web. El WhatsApp (opcional) solo se usa para comprobar tu pedido y no se publica. Conservación: mientras la opinión esté publicada o hasta que pidas retirarla. Puedes ejercer tus derechos de acceso, rectificación y supresión escribiéndonos por WhatsApp al +34 671 276 483.</p>
+        <p>Responsable: Royal Reloj (Madrid). Finalidad: revisar tu opinión y, con tu consentimiento, publicarla en esta web. El WhatsApp (opcional) solo se usa para comprobar tu pedido y no se publica. La foto (opcional) se aloja en Cloudinary, nuestro proveedor de imágenes. Conservación: mientras la opinión esté publicada o hasta que pidas retirarla. Puedes ejercer tus derechos de acceso, rectificación y supresión escribiéndonos por WhatsApp al +34 671 276 483.</p>
       </details>
       <div class="rv-err" id="rvErr" role="alert"></div>
       <button type="submit" class="rv-send" id="rvSend">Enviar opinión</button>
     </form>
     <div class="rv-thanks" id="rvThanks" hidden>
       <h3 id="rvThanksTitle">¡Gracias!</h3>
-      <p>Hemos recibido tu opinión. La revisaremos y, si todo está bien, aparecerá en la web. ¿Quieres que salga con una foto de tu reloj? Envíanosla por WhatsApp.</p>
+      <p id="rvThanksMsg">Hemos recibido tu opinión. La revisaremos y, si todo está bien, aparecerá en la web. ¿Quieres que salga con una foto de tu reloj? Envíanosla por WhatsApp.</p>
       <a class="rv-wa" id="rvWa" href="https://wa.me/34671276483" target="_blank" rel="noopener">Enviar foto por WhatsApp</a>
     </div>
   </div>
@@ -3863,6 +3877,9 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     var isVideo = it.type === 'video';
     var src = safeUrl(it.src, sample);
     if (!src) return null;
+    // a plain Cloudinary link (…/image/upload/v123/…) is cropped to the card shape automatically
+    var cm = !isVideo && src.match(/^(https:\/\/res\.cloudinary\.com\/[^\/]+\/image\/upload\/)(v\d+\/.+)$/);
+    if (cm) src = cm[1] + 'c_fill,g_auto,w_800,h_1000,q_auto,f_auto/' + cm[2];
     var name = String(it.name || '').trim();
     var card = h('article', 'proof-card');
     card.setAttribute('role', 'listitem');
@@ -4033,9 +4050,12 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
 </script>
 
 <script>
-/* ---- Leave-a-review form: emails the review to the owner (Web3Forms). Nothing is published automatically. ---- */
+/* ---- Leave-a-review form: emails the review to the owner (Web3Forms). Nothing is published automatically.
+        Optional photo: resized in the browser, uploaded to Cloudinary (unsigned preset), link goes in the email. ---- */
 (function () {
   var WEB3FORMS_KEY = '3cef24c8-6562-4fe7-a168-8f8dbdfe2aaa'; // public key, same as the wheel
+  var CLOUDINARY_CLOUD = 'wpgawuak';                           // public cloud name
+  var CLOUDINARY_PRESET = 'royalreloj_reviews';                // unsigned upload preset (empty string hides the photo field)
   var ov = document.getElementById('rvOverlay');
   var openBtn = document.getElementById('proofReviewBtn');
   if (!ov || !openBtn) return;
@@ -4043,6 +4063,8 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
   var thanks = document.getElementById('rvThanks');
   var el = function (id) { return document.getElementById(id); };
   var rating = 0, busy = false, lastFocus = null;
+  var photoBlob = null, photoObjUrl = null, uploadedUrl = '';
+  if (!CLOUDINARY_PRESET) el('rvPhotoRow').hidden = true;
 
   function setRating(n) {
     rating = n;
@@ -4050,6 +4072,18 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
       b.classList.toggle('on', Number(b.getAttribute('data-v')) <= n);
       b.setAttribute('aria-pressed', Number(b.getAttribute('data-v')) === n ? 'true' : 'false');
     });
+  }
+  function showError(msg, node) {
+    var e = el('rvErr');
+    e.textContent = '';
+    if (node) { e.appendChild(document.createTextNode(msg + ' ')); e.appendChild(node); } else e.textContent = msg;
+  }
+  function clearPhoto() {
+    photoBlob = null; uploadedUrl = '';
+    if (photoObjUrl) { URL.revokeObjectURL(photoObjUrl); photoObjUrl = null; }
+    el('rvPhoto').value = '';
+    el('rvPhotoPrev').hidden = true;
+    el('rvPhotoImg').removeAttribute('src');
   }
   function open() {
     lastFocus = document.activeElement;
@@ -4063,10 +4097,45 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     document.body.style.overflow = '';
     try { if (lastFocus && lastFocus.focus) lastFocus.focus(); } catch (e) {}
   }
-  function showError(msg, html) {
-    var e = el('rvErr');
-    e.textContent = '';
-    if (html) { e.appendChild(document.createTextNode(msg + ' ')); e.appendChild(html); } else e.textContent = msg;
+
+  // Shrink the picked photo (max 1600 px, JPEG 82%) so phone photos upload fast and stay small.
+  function shrink(file) {
+    return new Promise(function (resolve, reject) {
+      var MAX = 1600;
+      function draw(src, w, h) {
+        var s = Math.min(1, MAX / Math.max(w, h));
+        var cw = Math.max(1, Math.round(w * s)), ch = Math.max(1, Math.round(h * s));
+        var c = document.createElement('canvas'); c.width = cw; c.height = ch;
+        var x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, cw, ch); x.drawImage(src, 0, 0, cw, ch);
+        c.toBlob(function (b) { b ? resolve(b) : reject(new Error('blob')); }, 'image/jpeg', 0.82);
+      }
+      function viaImg() {
+        var u = URL.createObjectURL(file), im = new Image();
+        im.onload = function () { URL.revokeObjectURL(u); draw(im, im.naturalWidth, im.naturalHeight); };
+        im.onerror = function () { URL.revokeObjectURL(u); reject(new Error('decode')); };
+        im.src = u;
+      }
+      if (window.createImageBitmap) {
+        createImageBitmap(file, { imageOrientation: 'from-image' }).then(function (bm) { draw(bm, bm.width, bm.height); }, viaImg);
+      } else viaImg();
+    });
+  }
+  function uploadPhoto() {
+    if (!photoBlob) return Promise.resolve({ url: '', failed: false });
+    if (uploadedUrl) return Promise.resolve({ url: uploadedUrl, failed: false });
+    var fd = new FormData();
+    fd.append('file', photoBlob, 'review.jpg');
+    fd.append('upload_preset', CLOUDINARY_PRESET);
+    var ctl = window.AbortController ? new AbortController() : null;
+    var t = setTimeout(function () { if (ctl) ctl.abort(); }, 40000);
+    return fetch('https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/image/upload', { method: 'POST', body: fd, signal: ctl ? ctl.signal : undefined })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        clearTimeout(t);
+        if (res.ok && res.j && /^https:\/\//.test(res.j.secure_url || '')) { uploadedUrl = res.j.secure_url; return { url: uploadedUrl, failed: false }; }
+        return { url: '', failed: true };
+      })
+      .catch(function () { clearTimeout(t); return { url: '', failed: true }; });
   }
 
   openBtn.addEventListener('click', open);
@@ -4080,6 +4149,26 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     });
   });
   el('rvText').addEventListener('input', function () { el('rvCount').textContent = this.value.length + '/600'; });
+
+  el('rvPhoto').addEventListener('change', function () {
+    var f = this.files && this.files[0];
+    if (!f) { clearPhoto(); return; }
+    if (!/^image\//.test(f.type)) { clearPhoto(); showError('Elige una imagen (JPG, PNG…).'); return; }
+    if (f.size > 25 * 1024 * 1024) { clearPhoto(); showError('La foto es demasiado grande (máximo 25 MB).'); return; }
+    showError('');
+    uploadedUrl = '';
+    shrink(f).then(function (b) {
+      photoBlob = b;
+      if (photoObjUrl) URL.revokeObjectURL(photoObjUrl);
+      photoObjUrl = URL.createObjectURL(b);
+      el('rvPhotoImg').src = photoObjUrl;
+      el('rvPhotoPrev').hidden = false;
+    }).catch(function () {
+      clearPhoto();
+      showError('No hemos podido leer esa foto. Prueba con otra o envíanosla por WhatsApp.');
+    });
+  });
+  el('rvPhotoRm').addEventListener('click', clearPhoto);
 
   form.addEventListener('submit', function (ev) {
     ev.preventDefault();
@@ -4100,40 +4189,52 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     } catch (e) {}
     showError('');
 
-    function done() {
+    function done(up, hadPhoto) {
       try { localStorage.setItem('rr_review_ts', String(Date.now())); } catch (e) {}
       el('rvThanksTitle').textContent = '¡Gracias, ' + name + '!';
+      var msg, showWa = true;
+      if (up.url) { msg = 'Hemos recibido tu opinión y tu foto. La revisaremos y, si todo está bien, aparecerá en la web.'; showWa = false; }
+      else if (hadPhoto) msg = 'Hemos recibido tu opinión, pero no hemos podido subir la foto. Envíanosla por WhatsApp y la añadimos.';
+      else msg = 'Hemos recibido tu opinión. La revisaremos y, si todo está bien, aparecerá en la web. ¿Quieres que salga con una foto de tu reloj? Envíanosla por WhatsApp.';
+      el('rvThanksMsg').textContent = msg;
+      el('rvWa').hidden = !showWa;
       el('rvWa').href = 'https://wa.me/34671276483?text=' + encodeURIComponent('Hola, soy ' + name + ' y acabo de dejar mi opinión en la web. Te envío una foto de mi reloj:');
-      form.reset(); setRating(0); el('rvCount').textContent = '0/600';
+      form.reset(); setRating(0); clearPhoto(); el('rvCount').textContent = '0/600';
       form.hidden = true; thanks.hidden = false;
     }
     // honeypot: bots fill the hidden field, people never see it
-    if (el('rvHp').value) { done(); return; }
+    if (el('rvHp').value) { done({ url: '' }, false); return; }
 
     busy = true;
-    var send = el('rvSend'); send.disabled = true; send.textContent = 'Enviando…';
-    var payload = {
-      access_key: WEB3FORMS_KEY,
-      subject: 'Nueva reseña de cliente (pendiente de revisar)',
-      from_name: 'Royal Reloj Web',
-      botcheck: '',
-      nombre: name, ciudad: city || '(sin indicar)', reloj: watch || '(sin indicar)',
-      valoracion: rating ? rating + ' de 5' : '(sin valoración)',
-      opinion: text,
-      whatsapp_pedido: phone || '(no indicado)',
-      consentimiento: 'Sí (casilla marcada): autoriza publicar nombre, ciudad y opinión',
-      pagina: location.href,
-      fecha: new Date().toISOString()
-    };
-    fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(payload)
-    }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
-      .then(function (res) {
-        if (res.ok && res.j && res.j.success) { done(); return; }
-        throw new Error('send failed');
-      })
+    var send = el('rvSend'); send.disabled = true;
+    var hadPhoto = !!photoBlob;
+    send.textContent = hadPhoto ? 'Subiendo foto…' : 'Enviando…';
+    uploadPhoto().then(function (up) {
+      send.textContent = 'Enviando…';
+      var payload = {
+        access_key: WEB3FORMS_KEY,
+        subject: 'Nueva reseña de cliente (pendiente de revisar)',
+        from_name: 'Royal Reloj Web',
+        botcheck: '',
+        nombre: name, ciudad: city || '(sin indicar)', reloj: watch || '(sin indicar)',
+        valoracion: rating ? rating + ' de 5' : '(sin valoración)',
+        opinion: text,
+        foto: up.url || (hadPhoto ? '(la foto no se pudo subir: pedírsela por WhatsApp)' : '(sin foto)'),
+        whatsapp_pedido: phone || '(no indicado)',
+        consentimiento: 'Sí (casilla marcada): autoriza publicar nombre, ciudad, opinión y foto',
+        pagina: location.href,
+        fecha: new Date().toISOString()
+      };
+      return fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
+        .then(function (res) {
+          if (res.ok && res.j && res.j.success) { done(up, hadPhoto); return; }
+          throw new Error('send failed');
+        });
+    })
       .catch(function () {
         var a = document.createElement('a');
         a.href = 'https://wa.me/34671276483?text=' + encodeURIComponent('Hola, quiero dejar una opinión sobre mi pedido:');
