@@ -3852,7 +3852,7 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
 })();
 </script>
 
-<script>window.RR_REVIEWS_API = window.RR_REVIEWS_API || ''; /* Google Apps Script web app that stores/serves reviews sent from the web (see apps-script/reviews-backend.gs) */</script>
+<script>window.RR_REVIEWS_API = (typeof window.RR_REVIEWS_API === 'string') ? window.RR_REVIEWS_API : 'https://script.google.com/macros/s/AKfycbwb8neZQKQzXMdCaEgvtSmIafBYIwTeLJS2o_BDBFKoNnEH-7x2fXxPyj7fpdrf57Qw/exec'; /* Google Apps Script web app that stores/serves reviews sent from the web (see apps-script/reviews-backend.gs) */</script>
 <script>
 /* ---- Customer proof banner: reads /reviews.json (curated) + the Google Sheet API (reviews sent from the web), renders review cards ---- */
 (function () {
@@ -4175,7 +4175,7 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     form.hidden = false; thanks.hidden = true; el('rvErr').textContent = '';
     ov.hidden = false;
     document.body.style.overflow = 'hidden';
-    setTimeout(function () { try { el('rvName').focus(); } catch (e) {} }, 40);
+    setTimeout(function () { try { if (!form.contains(document.activeElement)) el('rvName').focus(); } catch (e) {} }, 40);   // never steal focus from a field the visitor already tapped
   }
   function close() {
     ov.hidden = true;
