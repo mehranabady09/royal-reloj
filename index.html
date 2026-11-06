@@ -439,6 +439,112 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,0.06); }
   margin: 0 auto;
 }
 
+/* ---- Customer proof banner (photo / video + review) ---- */
+.proof {
+  background:
+    radial-gradient(120% 150% at 88% 0%, rgba(201,168,76,0.12), transparent 55%),
+    var(--green-dark);
+  border-top: 1px solid rgba(201,168,76,0.3);
+  border-bottom: 1px solid rgba(201,168,76,0.3);
+  padding: 52px 24px 40px;
+}
+.proof-inner { max-width: 1280px; margin: 0 auto; }
+.proof-preview-note {
+  background: var(--gold); color: var(--green-dark);
+  font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+  padding: 8px 14px; border-radius: 8px; margin-bottom: 22px; text-align: center;
+}
+.proof-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px 32px; margin-bottom: 26px;
+}
+.proof-head .section-tag { margin-bottom: 6px; }
+.proof-title {
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 3.4vw, 34px);
+  line-height: 1.2; color: var(--white); margin-bottom: 8px;
+}
+.proof-sub { color: rgba(255,255,255,0.72); font-size: 14px; max-width: 520px; }
+.proof-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.proof-ig {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--gold); color: var(--gold-light);
+  font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+  padding: 9px 16px; border-radius: 999px; transition: background .2s, color .2s;
+}
+.proof-ig:hover { background: var(--gold); color: var(--green-dark); }
+.proof-ig svg { width: 16px; height: 16px; flex: none; }
+.proof-arrow {
+  width: 38px; height: 38px; border-radius: 50%; flex: none;
+  border: 1px solid rgba(201,168,76,0.6); background: transparent; color: var(--gold-light);
+  font-size: 18px; line-height: 1; cursor: pointer; transition: background .2s, color .2s, opacity .2s;
+}
+.proof-arrow:hover:not(:disabled) { background: var(--gold); color: var(--green-dark); }
+.proof-arrow:disabled { opacity: 0.3; cursor: default; }
+.proof-track {
+  display: flex; gap: 18px; overflow-x: auto; padding: 2px 2px 16px;
+  scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; scrollbar-color: var(--gold) transparent;
+}
+.proof-card:first-child { margin-left: auto; }
+.proof-card:last-child { margin-right: auto; }
+.proof-card {
+  flex: 0 0 min(540px, 90%); scroll-snap-align: start;
+  display: grid; grid-template-columns: 42% minmax(0, 1fr);
+  min-height: 300px; background: var(--cream);
+  border: 1px solid rgba(201,168,76,0.5); border-radius: 14px; overflow: hidden;
+  box-shadow: 0 14px 34px rgba(0,0,0,0.3);
+}
+.proof-media { position: relative; background: #0b1a12; min-height: 100%; }
+.proof-media img, .proof-media video {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #0b1a12;
+}
+.proof-badge {
+  position: absolute; left: 8px; top: 8px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(10,26,18,0.82); color: #fff; font-size: 11px; font-weight: 600;
+  padding: 4px 9px; border-radius: 999px; backdrop-filter: blur(4px);
+}
+.proof-badge svg { width: 12px; height: 12px; }
+.proof-badge.sample { background: var(--gold); color: var(--green-dark); letter-spacing: 0.06em; }
+.proof-play {
+  position: absolute; left: 50%; top: 50%; z-index: 2; transform: translate(-50%, -50%);
+  width: 58px; height: 58px; border-radius: 50%; border: 2px solid #fff; cursor: pointer;
+  background: rgba(201,168,76,0.92); color: var(--green-dark);
+  display: grid; place-items: center; transition: transform .2s;
+}
+.proof-play:hover { transform: translate(-50%, -50%) scale(1.07); }
+.proof-play svg { width: 22px; height: 22px; margin-left: 3px; }
+.proof-media.playing .proof-play { display: none; }
+.proof-body { display: flex; flex-direction: column; gap: 10px; padding: 20px 20px 18px; min-width: 0; }
+.proof-stars { color: var(--gold); font-size: 17px; letter-spacing: 2px; line-height: 1; }
+.proof-quote {
+  font-family: var(--font-serif); font-style: italic; font-size: 16px; line-height: 1.55;
+  color: var(--dark); overflow-wrap: anywhere;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 8; overflow: hidden;
+}
+.proof-quote.open { display: block; -webkit-line-clamp: unset; }
+.proof-more {
+  align-self: flex-start; background: none; border: 0; padding: 0; cursor: pointer;
+  color: var(--green-light); font: 600 12px var(--font-sans); text-decoration: underline;
+}
+.proof-who { margin-top: auto; display: flex; flex-direction: column; gap: 3px; }
+.proof-name { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-dark); }
+.proof-meta { font-size: 12px; color: var(--text-light); }
+.proof-watch {
+  align-self: flex-start; margin-top: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+  color: var(--green); border: 1px solid rgba(201,168,76,0.7); background: var(--gold-pale);
+  padding: 3px 10px; border-radius: 999px;
+}
+@media (max-width: 719px) {
+  .proof { padding: 40px 16px 30px; }
+  .proof-arrow { display: none; }
+  .proof-card { grid-template-columns: 40% minmax(0, 1fr); min-height: 260px; }
+  .proof-body { padding: 14px 14px 12px; gap: 8px; }
+  .proof-quote { font-size: 14px; -webkit-line-clamp: 7; }
+  .proof-play { width: 48px; height: 48px; }
+}
+
 /* ---- Brand Nav ---- */
 .brand-nav {
   background: var(--white);
@@ -1543,6 +1649,29 @@ footer {
     </div>
   </div>
 </div>
+<!-- CUSTOMER PROOF BANNER: photos / videos + reviews, filled from /reviews.json (hidden until there is at least one real item) -->
+<section class="proof" id="clientes" hidden aria-labelledby="proofTitle">
+  <div class="proof-inner">
+    <div class="proof-preview-note" id="proofPreviewNote" hidden>VISTA PREVIA: son datos de ejemplo y NO se muestran al público. Añade clientes reales en reviews.json.</div>
+    <div class="proof-head">
+      <div>
+        <div class="section-tag">✦ Clientes reales</div>
+        <h2 class="proof-title" id="proofTitle">Clientes reales</h2>
+        <p class="proof-sub" id="proofSub">Fotos, vídeos y opiniones de clientes que ya han recibido su pedido.</p>
+      </div>
+      <div class="proof-actions">
+        <button type="button" class="proof-arrow" id="proofPrev" aria-label="Anterior" hidden>←</button>
+        <button type="button" class="proof-arrow" id="proofNext" aria-label="Siguiente" hidden>→</button>
+        <a class="proof-ig" id="proofIg" href="https://www.instagram.com/royal_reloj" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
+          @royal_reloj en Instagram
+        </a>
+      </div>
+    </div>
+    <div class="proof-track" id="proofTrack" role="list" aria-label="Opiniones de clientes" tabindex="0"></div>
+  </div>
+</section>
+
 <section class="section collections" id="colecciones">
   <div class="section-inner">
     <div class="section-header">
@@ -3578,6 +3707,214 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
   } else {
     window.addEventListener('load', function() { setTimeout(showWheel, 2000); });
   }
+})();
+</script>
+
+<script>
+/* ---- Customer proof banner: reads /reviews.json, renders photo/video + review cards ---- */
+(function () {
+  var sec = document.getElementById('clientes');
+  var track = document.getElementById('proofTrack');
+  if (!sec || !track) return;
+  var prev = document.getElementById('proofPrev');
+  var next = document.getElementById('proofNext');
+  var previewMode = false;
+  try { previewMode = new URLSearchParams(location.search).get('preview') === 'reviews'; } catch (e) {}
+
+  var IG_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg>';
+  var PLAY_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg>';
+
+  function h(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function safeUrl(u, allowData) {
+    if (!u) return '';
+    try {
+      var x = new URL(String(u), location.href);
+      if (x.protocol === 'http:' || x.protocol === 'https:') return x.href;
+      if (allowData && x.protocol === 'data:' && /^data:image\//i.test(String(u))) return String(u);
+    } catch (e) {}
+    return '';
+  }
+  function pauseOthers(except) {
+    track.querySelectorAll('video').forEach(function (v) { if (v !== except) v.pause(); });
+  }
+  function fmtDate(s) {
+    if (!s) return '';
+    var d = new Date(s);
+    if (isNaN(d.getTime())) return '';
+    try { return d.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }); } catch (e) { return ''; }
+  }
+
+  function buildCard(it, sample) {
+    if (!it || typeof it !== 'object') return null;
+    var isVideo = it.type === 'video';
+    var src = safeUrl(it.src, sample);
+    if (!src) return null;
+    var name = String(it.name || '').trim();
+    var card = h('article', 'proof-card');
+    card.setAttribute('role', 'listitem');
+
+    var media = h('div', 'proof-media');
+    if (isVideo) {
+      var v = document.createElement('video');
+      v.preload = 'metadata';
+      v.setAttribute('playsinline', '');
+      v.setAttribute('aria-label', 'Vídeo de ' + (name || 'un cliente'));
+      var poster = safeUrl(it.poster, sample);
+      if (poster) v.poster = poster;
+      try { var u = new URL(src); u.hash = 't=0.1'; v.src = u.href; } catch (e) { v.src = src; }
+      var btn = h('button', 'proof-play');
+      btn.type = 'button';
+      btn.setAttribute('aria-label', 'Reproducir vídeo');
+      btn.innerHTML = PLAY_SVG;
+      btn.addEventListener('click', function () {
+        pauseOthers(v);
+        v.controls = true;
+        v.muted = false;
+        media.classList.add('playing');
+        var p = v.play();
+        if (p && p.catch) p.catch(function () { media.classList.remove('playing'); v.controls = false; });
+      });
+      v.addEventListener('play', function () { pauseOthers(v); media.classList.add('playing'); });
+      v.addEventListener('ended', function () { v.controls = false; media.classList.remove('playing'); });
+      v.addEventListener('error', function () { drop(card); });
+      media.appendChild(v);
+      media.appendChild(btn);
+    } else {
+      var img = document.createElement('img');
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.alt = 'Cliente con su ' + (it.watch ? String(it.watch) : 'reloj') + (name ? ', ' + name : '');
+      img.addEventListener('error', function () { drop(card); });
+      img.src = src;
+      media.appendChild(img);
+    }
+    if (sample) {
+      media.appendChild(h('span', 'proof-badge sample', 'EJEMPLO'));
+    } else {
+      var link = safeUrl(it.link);
+      if (link) {
+        var a = h('a', 'proof-badge');
+        a.href = link; a.target = '_blank'; a.rel = 'noopener noreferrer';
+        a.setAttribute('aria-label', 'Ver publicación original');
+        a.innerHTML = IG_SVG;
+        a.appendChild(document.createTextNode('Instagram'));
+        media.appendChild(a);
+      }
+    }
+    card.appendChild(media);
+
+    var body = h('div', 'proof-body');
+    var n = Math.max(1, Math.min(5, Math.round(Number(it.stars) || 5)));
+    var stars = h('div', 'proof-stars', new Array(n + 1).join('★') + new Array(6 - n).join('☆'));
+    stars.setAttribute('role', 'img');
+    stars.setAttribute('aria-label', n + ' de 5 estrellas');
+    body.appendChild(stars);
+
+    var text = String(it.text || '').trim().replace(/^[“"]+|[”"]+$/g, '');
+    if (text) {
+      var q = h('blockquote', 'proof-quote', '“' + text + '”');
+      body.appendChild(q);
+      var more = h('button', 'proof-more', 'Leer más');
+      more.type = 'button';
+      more.hidden = true;
+      more.addEventListener('click', function () {
+        var open = q.classList.toggle('open');
+        more.textContent = open ? 'Leer menos' : 'Leer más';
+      });
+      body.appendChild(more);
+      card._q = q; card._more = more;
+    }
+
+    var who = h('div', 'proof-who');
+    if (name) who.appendChild(h('div', 'proof-name', name));
+    var meta = [it.city ? String(it.city) : '', fmtDate(it.date)].filter(Boolean).join(' · ');
+    if (meta) who.appendChild(h('div', 'proof-meta', meta));
+    if (it.watch) who.appendChild(h('div', 'proof-watch', String(it.watch)));
+    body.appendChild(who);
+    card.appendChild(body);
+    return card;
+  }
+
+  function drop(card) {
+    if (card.parentNode) card.parentNode.removeChild(card);
+    if (!track.children.length) sec.hidden = true;
+    updateArrows();
+  }
+  function checkClamps() {
+    track.querySelectorAll('.proof-card').forEach(function (c) {
+      if (!c._q) return;
+      if (c._q.classList.contains('open')) { c._more.hidden = false; return; }
+      c._more.hidden = !(c._q.scrollHeight > c._q.clientHeight + 1);
+    });
+  }
+  function updateArrows() {
+    var overflow = track.scrollWidth > track.clientWidth + 4;
+    prev.hidden = next.hidden = !overflow;
+    prev.disabled = track.scrollLeft <= 4;
+    next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+  }
+  function step(dir) {
+    var c = track.querySelector('.proof-card');
+    var w = c ? c.getBoundingClientRect().width + 18 : track.clientWidth * 0.8;
+    track.scrollBy({ left: dir * w, behavior: 'smooth' });
+  }
+  prev.addEventListener('click', function () { step(-1); });
+  next.addEventListener('click', function () { step(1); });
+  track.addEventListener('scroll', updateArrows, { passive: true });
+  window.addEventListener('resize', function () { checkClamps(); updateArrows(); });
+
+  function sampleItems() {
+    var slugs = ['datejust-blue', 'submariner-kermit', 'nautilus-rose-gold'];
+    var out = [];
+    slugs.forEach(function (s, i) {
+      try {
+        var src = window.PHOTOS && PHOTOS[s] && PHOTOS[s][0];
+        if (src) out.push({
+          type: 'photo', src: src, name: 'Nombre del cliente', city: 'Ciudad',
+          watch: 'Modelo del reloj', stars: 5,
+          text: 'Aquí aparecerá la opinión del cliente, tal como la escribió, junto a su foto o su vídeo. Sustituye este texto añadiendo reseñas reales en reviews.json.'
+        });
+      } catch (e) {}
+    });
+    return out;
+  }
+
+  function render(data, sample) {
+    var items = (data && Array.isArray(data.items)) ? data.items : [];
+    track.textContent = '';
+    items.forEach(function (it) {
+      var c = buildCard(it, sample);
+      if (c) track.appendChild(c);
+    });
+    if (!track.children.length) { sec.hidden = true; return; }
+    if (data.title) document.getElementById('proofTitle').textContent = String(data.title);
+    if (data.subtitle) document.getElementById('proofSub').textContent = String(data.subtitle);
+    var ig = safeUrl(data.instagram);
+    if (ig) document.getElementById('proofIg').href = ig;
+    document.getElementById('proofPreviewNote').hidden = !sample;
+    sec.hidden = false;
+    requestAnimationFrame(function () { checkClamps(); updateArrows(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { checkClamps(); updateArrows(); });
+  }
+
+  function load() {
+    fetch('reviews.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (d) {
+        var hasReal = d && Array.isArray(d.items) && d.items.length;
+        if (!hasReal && previewMode) render({ items: sampleItems() }, true);
+        else render(d, false);
+      })
+      .catch(function (e) {
+        if (previewMode) render({ items: sampleItems() }, true);
+      });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', load); else load();
 })();
 </script>
 

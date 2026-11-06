@@ -1,0 +1,6 @@
+Fotos y vídeos de clientes para el banner "Clientes reales".
+
+- Fotos: .jpg o .webp, lado largo de unos 1200 px, menos de 400 KB.
+- Vídeos: .mp4 (H.264), verticales, 10-30 segundos, menos de 10 MB.
+  Si quieres una portada, sube también una foto y ponla en "poster".
+- Después añade el bloque en reviews.json (hay ejemplos dentro).

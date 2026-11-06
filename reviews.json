@@ -1,0 +1,33 @@
+{
+  "_como_añadir": "1) Sube la foto o el vídeo a la carpeta media/reviews/ (fotos .jpg de menos de 400 KB, vídeos .mp4 verticales de menos de 10 MB). 2) Copia uno de los bloques de _ejemplo_foto / _ejemplo_video, pégalo dentro de la lista \"items\" (separa los bloques con una coma) y cambia los datos. 3) Guarda. El banner aparece solo en la web en cuanto hay al menos un bloque en \"items\". Solo reseñas y fotos reales de clientes.",
+
+  "title": "Clientes reales",
+  "subtitle": "Fotos, vídeos y opiniones de clientes que ya han recibido su pedido.",
+  "instagram": "https://www.instagram.com/royal_reloj",
+
+  "items": [],
+
+  "_ejemplo_foto": {
+    "type": "photo",
+    "src": "media/reviews/nombre-de-la-foto.jpg",
+    "name": "Nombre del cliente",
+    "city": "Ciudad",
+    "watch": "Modelo del reloj",
+    "stars": 5,
+    "text": "Aquí va la opinión del cliente, tal como la escribió.",
+    "date": "2026-11-01",
+    "link": "https://www.instagram.com/p/CODIGO-DE-LA-PUBLICACION/"
+  },
+
+  "_ejemplo_video": {
+    "type": "video",
+    "src": "media/reviews/nombre-del-video.mp4",
+    "poster": "media/reviews/portada-del-video.jpg",
+    "name": "Nombre del cliente",
+    "city": "Ciudad",
+    "watch": "Modelo del reloj",
+    "stars": 5,
+    "text": "Aquí va la opinión del cliente.",
+    "date": "2026-11-01"
+  }
+}
