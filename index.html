@@ -556,6 +556,70 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,0.06); }
   .proof-badge { left: 6px; top: 6px; font-size: 10px; padding: 3px 7px; }
 }
 
+/* ---- Leave-a-review form (goes to the owner's inbox; never auto-published) ---- */
+.proof-cta {
+  border: 1px solid var(--gold); background: var(--gold); color: var(--green-dark);
+  font: 700 12.5px var(--font-sans); letter-spacing: 0.02em; white-space: nowrap;
+  padding: 7px 14px; border-radius: 999px; cursor: pointer; transition: background .2s, border-color .2s;
+}
+.proof-cta:hover { background: var(--gold-light); border-color: var(--gold-light); }
+.rv-overlay {
+  position: fixed; inset: 0; z-index: 10000; display: flex; justify-content: center;
+  background: rgba(6,16,10,0.78); overflow-y: auto; padding: 14px;
+}
+.rv-box {
+  position: relative; width: 100%; max-width: 440px; margin: auto; background: var(--cream);
+  border: 1px solid rgba(201,168,76,0.6); border-radius: 14px; padding: 22px 20px 18px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5); color: var(--text);
+}
+.rv-close {
+  position: absolute; right: 10px; top: 8px; width: 34px; height: 34px; border: 0; background: none;
+  font-size: 26px; line-height: 1; color: var(--text-light); cursor: pointer;
+}
+.rv-box h3 { font-family: var(--font-serif); font-size: 22px; color: var(--green-dark); margin: 0 30px 4px 0; }
+.rv-lead { font-size: 13px; color: var(--text-light); margin-bottom: 14px; }
+.rv-box label { display: block; font-size: 12px; font-weight: 600; color: var(--green-dark); margin-bottom: 10px; }
+.rv-box label small { font-weight: 400; color: var(--text-light); }
+.rv-box input[type="text"], .rv-box input[type="tel"], .rv-box textarea {
+  display: block; width: 100%; margin-top: 4px; padding: 10px 12px; font: 400 16px var(--font-sans);
+  color: var(--dark); background: var(--white); border: 1px solid #d8d3c4; border-radius: 8px;
+}
+.rv-box textarea { resize: vertical; min-height: 92px; }
+.rv-box input:focus, .rv-box textarea:focus { outline: 2px solid var(--gold); outline-offset: 0; border-color: var(--gold); }
+.rv-rate { display: flex; align-items: center; gap: 2px; margin: 0 0 10px; }
+.rv-rate > span { font-size: 12px; font-weight: 600; color: var(--green-dark); margin-right: 8px; }
+.rv-rate small { font-weight: 400; color: var(--text-light); }
+.rv-star { background: none; border: 0; padding: 2px 3px; font-size: 26px; line-height: 1; color: #cfc8b4; cursor: pointer; }
+.rv-star.on { color: var(--gold); }
+.rv-count { display: block; text-align: right; font-size: 11px; color: var(--text-light); margin-top: 2px; }
+.rv-box label.rv-consent { display: flex; gap: 8px; align-items: flex-start; font-weight: 400; font-size: 12px; color: var(--text); margin: 4px 0 6px; }
+.rv-consent input { margin-top: 2px; width: 16px; height: 16px; flex: none; accent-color: var(--green); }
+.rv-box details { font-size: 11px; color: var(--text-light); margin-bottom: 10px; }
+.rv-box details summary { cursor: pointer; }
+.rv-box details p { margin-top: 6px; line-height: 1.5; }
+.rv-err { min-height: 16px; font-size: 12px; font-weight: 600; color: #a32a2a; margin-bottom: 8px; }
+.rv-err a { text-decoration: underline; }
+.rv-send {
+  width: 100%; padding: 12px; border: 0; border-radius: 10px; cursor: pointer;
+  background: var(--green); color: var(--white); font: 700 15px var(--font-sans); transition: background .2s;
+}
+.rv-send:hover:not(:disabled) { background: var(--green-light); }
+.rv-send:disabled { opacity: 0.6; cursor: default; }
+.rv-thanks { text-align: center; padding: 10px 4px 4px; }
+.rv-thanks p { font-size: 14px; color: var(--text); margin: 8px 0 14px; }
+.rv-wa {
+  display: inline-block; background: #25d366; color: #fff; font-weight: 700; font-size: 14px;
+  padding: 11px 18px; border-radius: 10px;
+}
+.rv-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+@media (max-width: 719px) {
+  .proof-cta { padding: 6px 12px; font-size: 11.5px; }
+  .proof-ig { padding: 0; width: 32px; height: 32px; justify-content: center; }
+  .proof-ig .proof-ig-text { display: none; }
+  .proof-ig svg { width: 16px; height: 16px; }
+  .rv-box { padding: 18px 16px 14px; }
+}
+
 /* ---- Brand Nav ---- */
 .brand-nav {
   background: var(--white);
@@ -1671,13 +1735,51 @@ footer {
         <button type="button" class="proof-arrow" id="proofNext" aria-label="Siguiente" hidden>→</button>
         <a class="proof-ig" id="proofIg" href="https://www.instagram.com/royalreloj.es/" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
-          @royalreloj.es
+          <span class="proof-ig-text">@royalreloj.es</span>
         </a>
+        <button type="button" class="proof-cta" id="proofReviewBtn">Dejar reseña</button>
       </div>
     </div>
     <div class="proof-track" id="proofTrack" role="list" aria-label="Opiniones de clientes" tabindex="0"></div>
   </div>
 </section>
+
+<!-- LEAVE-A-REVIEW FORM: sends to the owner's inbox via Web3Forms; nothing is published automatically -->
+<div class="rv-overlay" id="rvOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="rvTitle">
+  <div class="rv-box">
+    <button type="button" class="rv-close" id="rvClose" aria-label="Cerrar">×</button>
+    <form id="rvForm" novalidate>
+      <h3 id="rvTitle">Deja tu opinión</h3>
+      <p class="rv-lead">Cuéntanos qué tal fue tu pedido. La revisamos antes de publicarla.</p>
+      <label>Nombre <input type="text" id="rvName" maxlength="40" autocomplete="given-name" placeholder="Ej. Carlos M."></label>
+      <label>Ciudad <input type="text" id="rvCity" maxlength="40" autocomplete="address-level2" placeholder="Ej. Madrid"></label>
+      <label>Reloj que compraste <input type="text" id="rvWatch" maxlength="60" placeholder="Ej. Rolex Submariner Negro"></label>
+      <div class="rv-rate" id="rvRate" role="group" aria-label="Valoración (opcional)">
+        <span>Valoración <small>(opcional)</small></span>
+        <button type="button" class="rv-star" data-v="1" aria-label="1 estrella">★</button>
+        <button type="button" class="rv-star" data-v="2" aria-label="2 estrellas">★</button>
+        <button type="button" class="rv-star" data-v="3" aria-label="3 estrellas">★</button>
+        <button type="button" class="rv-star" data-v="4" aria-label="4 estrellas">★</button>
+        <button type="button" class="rv-star" data-v="5" aria-label="5 estrellas">★</button>
+      </div>
+      <label>Tu opinión <textarea id="rvText" maxlength="600" placeholder="¿Qué tal el reloj, el envío y la atención?"></textarea><span class="rv-count" id="rvCount">0/600</span></label>
+      <label>WhatsApp con el que hiciste el pedido <small>(opcional: solo para verificar tu compra, no se publica)</small> <input type="tel" id="rvPhone" inputmode="tel" autocomplete="tel" placeholder="Ej. 612 345 678"></label>
+      <input type="text" id="rvHp" class="rv-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="rv-consent"><input type="checkbox" id="rvConsent"> <span>Acepto que Royal Reloj publique mi nombre, ciudad y opinión en esta web.</span></label>
+      <details>
+        <summary>Información sobre protección de datos</summary>
+        <p>Responsable: Royal Reloj (Madrid). Finalidad: revisar tu opinión y, con tu consentimiento, publicarla en esta web. El WhatsApp (opcional) solo se usa para comprobar tu pedido y no se publica. Conservación: mientras la opinión esté publicada o hasta que pidas retirarla. Puedes ejercer tus derechos de acceso, rectificación y supresión escribiéndonos por WhatsApp al +34 671 276 483.</p>
+      </details>
+      <div class="rv-err" id="rvErr" role="alert"></div>
+      <button type="submit" class="rv-send" id="rvSend">Enviar opinión</button>
+    </form>
+    <div class="rv-thanks" id="rvThanks" hidden>
+      <h3 id="rvThanksTitle">¡Gracias!</h3>
+      <p>Hemos recibido tu opinión. La revisaremos y, si todo está bien, aparecerá en la web. ¿Quieres que salga con una foto de tu reloj? Envíanosla por WhatsApp.</p>
+      <a class="rv-wa" id="rvWa" href="https://wa.me/34671276483" target="_blank" rel="noopener">Enviar foto por WhatsApp</a>
+    </div>
+  </div>
+</div>
 
 <section class="section collections" id="colecciones">
   <div class="section-inner">
@@ -3927,6 +4029,119 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
       });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', load); else load();
+})();
+</script>
+
+<script>
+/* ---- Leave-a-review form: emails the review to the owner (Web3Forms). Nothing is published automatically. ---- */
+(function () {
+  var WEB3FORMS_KEY = '3cef24c8-6562-4fe7-a168-8f8dbdfe2aaa'; // public key, same as the wheel
+  var ov = document.getElementById('rvOverlay');
+  var openBtn = document.getElementById('proofReviewBtn');
+  if (!ov || !openBtn) return;
+  var form = document.getElementById('rvForm');
+  var thanks = document.getElementById('rvThanks');
+  var el = function (id) { return document.getElementById(id); };
+  var rating = 0, busy = false, lastFocus = null;
+
+  function setRating(n) {
+    rating = n;
+    Array.prototype.forEach.call(document.querySelectorAll('#rvRate .rv-star'), function (b) {
+      b.classList.toggle('on', Number(b.getAttribute('data-v')) <= n);
+      b.setAttribute('aria-pressed', Number(b.getAttribute('data-v')) === n ? 'true' : 'false');
+    });
+  }
+  function open() {
+    lastFocus = document.activeElement;
+    form.hidden = false; thanks.hidden = true; el('rvErr').textContent = '';
+    ov.hidden = false;
+    document.body.style.overflow = 'hidden';
+    setTimeout(function () { try { el('rvName').focus(); } catch (e) {} }, 40);
+  }
+  function close() {
+    ov.hidden = true;
+    document.body.style.overflow = '';
+    try { if (lastFocus && lastFocus.focus) lastFocus.focus(); } catch (e) {}
+  }
+  function showError(msg, html) {
+    var e = el('rvErr');
+    e.textContent = '';
+    if (html) { e.appendChild(document.createTextNode(msg + ' ')); e.appendChild(html); } else e.textContent = msg;
+  }
+
+  openBtn.addEventListener('click', open);
+  el('rvClose').addEventListener('click', close);
+  ov.addEventListener('mousedown', function (e) { if (e.target === ov) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !ov.hidden) close(); });
+  Array.prototype.forEach.call(document.querySelectorAll('#rvRate .rv-star'), function (b) {
+    b.addEventListener('click', function () {
+      var v = Number(b.getAttribute('data-v'));
+      setRating(v === rating ? 0 : v);
+    });
+  });
+  el('rvText').addEventListener('input', function () { el('rvCount').textContent = this.value.length + '/600'; });
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (busy) return;
+    var name = el('rvName').value.trim();
+    var city = el('rvCity').value.trim();
+    var watch = el('rvWatch').value.trim();
+    var text = el('rvText').value.trim();
+    var phone = el('rvPhone').value.trim();
+    if (name.length < 2) return showError('Escribe tu nombre (por ejemplo, Carlos M.).');
+    if (text.length < 15) return showError('Cuéntanos un poco más sobre tu pedido (mínimo 15 caracteres).');
+    var digits = phone.replace(/[\s().\-+]/g, '');
+    if (phone && !/^\d{8,15}$/.test(digits)) return showError('Revisa el número de WhatsApp o déjalo en blanco.');
+    if (!el('rvConsent').checked) return showError('Marca la casilla para autorizar la publicación de tu opinión.');
+    try {
+      var last = Number(localStorage.getItem('rr_review_ts') || 0);
+      if (last && Date.now() - last < 5 * 60 * 1000) return showError('Ya hemos recibido tu opinión hace un momento. ¡Gracias!');
+    } catch (e) {}
+    showError('');
+
+    function done() {
+      try { localStorage.setItem('rr_review_ts', String(Date.now())); } catch (e) {}
+      el('rvThanksTitle').textContent = '¡Gracias, ' + name + '!';
+      el('rvWa').href = 'https://wa.me/34671276483?text=' + encodeURIComponent('Hola, soy ' + name + ' y acabo de dejar mi opinión en la web. Te envío una foto de mi reloj:');
+      form.reset(); setRating(0); el('rvCount').textContent = '0/600';
+      form.hidden = true; thanks.hidden = false;
+    }
+    // honeypot: bots fill the hidden field, people never see it
+    if (el('rvHp').value) { done(); return; }
+
+    busy = true;
+    var send = el('rvSend'); send.disabled = true; send.textContent = 'Enviando…';
+    var payload = {
+      access_key: WEB3FORMS_KEY,
+      subject: 'Nueva reseña de cliente (pendiente de revisar)',
+      from_name: 'Royal Reloj Web',
+      botcheck: '',
+      nombre: name, ciudad: city || '(sin indicar)', reloj: watch || '(sin indicar)',
+      valoracion: rating ? rating + ' de 5' : '(sin valoración)',
+      opinion: text,
+      whatsapp_pedido: phone || '(no indicado)',
+      consentimiento: 'Sí (casilla marcada): autoriza publicar nombre, ciudad y opinión',
+      pagina: location.href,
+      fecha: new Date().toISOString()
+    };
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (res.ok && res.j && res.j.success) { done(); return; }
+        throw new Error('send failed');
+      })
+      .catch(function () {
+        var a = document.createElement('a');
+        a.href = 'https://wa.me/34671276483?text=' + encodeURIComponent('Hola, quiero dejar una opinión sobre mi pedido:');
+        a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Escríbenos por WhatsApp';
+        showError('No hemos podido enviarla ahora.', a);
+      })
+      .then(function () { busy = false; send.disabled = false; send.textContent = 'Enviar opinión'; });
+  });
 })();
 </script>
 
