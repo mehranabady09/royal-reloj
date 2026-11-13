@@ -3447,7 +3447,6 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     void popup.offsetWidth;
     popup.classList.add('ap-show');
     _dingCount++;
-    if (_dingCount % 10 === 0) { playDing(); }
     setTimeout(function() { popup.classList.remove('ap-show'); }, 5000);
   }
 
