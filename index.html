@@ -3852,6 +3852,56 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
 </script>
 
 <script>window.RR_REVIEWS_API = (typeof window.RR_REVIEWS_API === 'string') ? window.RR_REVIEWS_API : 'https://script.google.com/macros/s/AKfycbwb8neZQKQzXMdCaEgvtSmIafBYIwTeLJS2o_BDBFKoNnEH-7x2fXxPyj7fpdrf57Qw/exec'; /* Google Apps Script web app that stores/serves reviews sent from the web (see apps-script/reviews-backend.gs) */</script>
+<style>
+.stock-tag{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:11px;font-weight:600;letter-spacing:.04em;margin:0 0 10px;padding:3px 9px;border-radius:999px}
+.stock-tag::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.stock-ok{color:#1f7a3d;background:#e6f4ea}
+.stock-low{color:#9a5b00;background:#fff3dc}
+.stock-out{color:#a32d2d;background:#fbe9e9}
+.watch-card.is-out .watch-img img{opacity:.55;filter:grayscale(.35)}
+.watch-card.is-out .card-cta{background:#fff;color:#1a1a1a;border:1px solid #cfcfcf}
+.watch-card.is-out .card-cta svg{fill:#25d366}
+</style>
+<script>
+/* ---- Stock en vivo: lee el stock AAA+ publicado por el dashboard (Google Sheet, hoja "Stock") y marca cada reloj ---- */
+(function () {
+  var API = window.RR_REVIEWS_API || '';
+  if (!API || !window.fetch) return;
+  function apply(stock) {
+    var cards = document.querySelectorAll('.watch-card[data-model]');
+    for (var i = 0; i < cards.length; i++) {
+      var card = cards[i], slug = card.getAttribute('data-model');
+      if (!Object.prototype.hasOwnProperty.call(stock, slug)) continue;
+      var n = Number(stock[slug]);
+      if (isNaN(n)) continue;
+      var body = card.querySelector('.card-body'), table = card.querySelector('.price-table');
+      if (!body || !table || card.querySelector('.stock-tag')) continue;
+      var tag = document.createElement('div');
+      tag.className = 'stock-tag ' + (n <= 0 ? 'stock-out' : n <= 2 ? 'stock-low' : 'stock-ok');
+      tag.textContent = n <= 0 ? 'Agotado' : n === 1 ? 'Solo queda 1' : n <= 2 ? 'Solo quedan ' + n : 'En stock';
+      body.insertBefore(tag, table);
+      card.setAttribute('data-stock', String(n));
+      if (n <= 0) {
+        card.classList.add('is-out');
+        var cta = card.querySelector('.card-cta'), nm = card.querySelector('.card-name');
+        if (cta && nm) {
+          var wa = (typeof WA !== 'undefined') ? WA : '34671276483';
+          cta.href = 'https://wa.me/' + wa + '?text=' + encodeURIComponent('Hola, avísame cuando llegue el ' + nm.textContent.trim());
+          for (var k = cta.childNodes.length - 1; k >= 0; k--) {
+            if (cta.childNodes[k].nodeType === 3 && cta.childNodes[k].textContent.trim()) { cta.childNodes[k].textContent = ' Avisarme cuando llegue'; break; }
+          }
+        }
+      }
+    }
+  }
+  try {
+    fetch(API + (API.indexOf('?') < 0 ? '?' : '&') + 'action=stock')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { if (d && d.stock && typeof d.stock === 'object') apply(d.stock); })
+      .catch(function () {});
+  } catch (e) {}
+})();
+</script>
 <script>
 /* ---- Customer proof banner: reads /reviews.json (curated) + the Google Sheet API (reviews sent from the web), renders review cards ---- */
 (function () {

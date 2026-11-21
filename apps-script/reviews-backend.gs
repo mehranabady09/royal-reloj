@@ -71,11 +71,84 @@ function rateLimited_(cache) {
   return false;
 }
 
+
+/* ---------- STOCK (en stock / agotado en la web) ----------
+ * El dashboard envía aquí las unidades AAA+ en stock de cada reloj; la web las lee y muestra
+ * "En stock" / "Solo quedan N" / "Agotado". La hoja "Stock" es solo un espejo: edita el stock en el dashboard.
+ * Antes de publicar, define la contraseña: Configuración del proyecto > Propiedades del script > STOCK_SECRET.
+ */
+var STOCK_SHEET = 'Stock';
+var STOCK_HEADERS = ['Reloj (slug)', 'AAA+ en stock', 'Actualizado'];
+
+function stockSheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(STOCK_SHEET);
+  if (!sh) {
+    sh = ss.insertSheet(STOCK_SHEET);
+    sh.appendRow(STOCK_HEADERS);
+    sh.setFrozenRows(1);
+    sh.getRange(1, 1, 1, STOCK_HEADERS.length).setFontWeight('bold');
+  }
+  return sh;
+}
+
+function stockGet_() {
+  var cache = CacheService.getScriptCache();
+  var hit = cache.get('stock');
+  if (hit) return ContentService.createTextOutput(hit).setMimeType(ContentService.MimeType.JSON);
+  var sh = stockSheet_();
+  var last = sh.getLastRow();
+  var stock = {}, updated = '';
+  if (last > 1) {
+    var rows = sh.getRange(2, 1, last - 1, 3).getValues();
+    for (var i = 0; i < rows.length; i++) {
+      var slug = String(rows[i][0]).trim();
+      if (!/^[a-z0-9-]{2,60}$/.test(slug)) continue;
+      var n = Number(rows[i][1]);
+      if (isNaN(n) || n < 0) continue;
+      stock[slug] = Math.min(99, Math.floor(n));
+      updated = String(rows[i][2]);
+    }
+  }
+  var body = JSON.stringify({ stock: stock, updated: updated });
+  cache.put('stock', body, 30);
+  return ContentService.createTextOutput(body).setMimeType(ContentService.MimeType.JSON);
+}
+
+function stockPost_(d) {
+  var secret = PropertiesService.getScriptProperties().getProperty('STOCK_SECRET');
+  if (!secret || String(d.secret || '') !== secret) return out_({ ok: false, error: 'auth' });
+  var items = d.stock;
+  if (!items || typeof items !== 'object') return out_({ ok: false, error: 'bad' });
+  var rows = [], now = new Date().toISOString();
+  for (var slug in items) {
+    if (!/^[a-z0-9-]{2,60}$/.test(slug)) continue;
+    var n = Number(items[slug]);
+    if (isNaN(n) || n < 0) continue;
+    rows.push([slug, Math.min(99, Math.floor(n)), now]);
+  }
+  var lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(10000);
+    var sh = stockSheet_();
+    var last = sh.getLastRow();
+    if (last > 1) sh.getRange(2, 1, last - 1, 3).clearContent();
+    if (rows.length) sh.getRange(2, 1, rows.length, 3).setValues(rows);
+    CacheService.getScriptCache().remove('stock');
+    return out_({ ok: true, count: rows.length, updated: now });
+  } catch (err) {
+    return out_({ ok: false, error: 'server' });
+  } finally {
+    try { lock.releaseLock(); } catch (e2) {}
+  }
+}
+
 function doPost(e) {
   var lock = LockService.getScriptLock();
   try {
     lock.waitLock(10000);
     var d = JSON.parse(e.postData.contents);
+    if (d && d.action === 'stock') { try { lock.releaseLock(); } catch (e0) {} return stockPost_(d); }
     var v = validate_(d);
     if (v.error) return out_({ ok: false, error: v.error });
     var cache = CacheService.getScriptCache();
@@ -102,7 +175,8 @@ function doPost(e) {
   }
 }
 
-function doGet() {
+function doGet(e) {
+  if (e && e.parameter && e.parameter.action === 'stock') return stockGet_();
   var cache = CacheService.getScriptCache();
   var hit = cache.get('items');
   if (hit) return ContentService.createTextOutput(hit).setMimeType(ContentService.MimeType.JSON);
