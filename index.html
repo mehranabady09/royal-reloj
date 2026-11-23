@@ -3857,10 +3857,7 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
 .stock-tag::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
 .stock-ok{color:#1f7a3d;background:#e6f4ea}
 .stock-low{color:#9a5b00;background:#fff3dc}
-.stock-out{color:#a32d2d;background:#fbe9e9}
-.watch-card.is-out .watch-img img{opacity:.55;filter:grayscale(.35)}
-.watch-card.is-out .card-cta{background:#fff;color:#1a1a1a;border:1px solid #cfcfcf}
-.watch-card.is-out .card-cta svg{fill:#25d366}
+.stock-out{color:#4a5560;background:#eef1f4}
 </style>
 <script>
 /* ---- Stock en vivo: lee el stock AAA+ publicado por el dashboard (Google Sheet, hoja "Stock") y marca cada reloj ---- */
@@ -3878,7 +3875,7 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
       if (!body || !table || card.querySelector('.stock-tag')) continue;
       var tag = document.createElement('div');
       tag.className = 'stock-tag ' + (n <= 0 ? 'stock-out' : n <= 2 ? 'stock-low' : 'stock-ok');
-      tag.textContent = n <= 0 ? 'Agotado' : n === 1 ? 'Solo queda 1' : n <= 2 ? 'Solo quedan ' + n : 'En stock';
+      tag.textContent = n <= 0 ? 'Bajo pedido · 7-10 días' : n === 1 ? 'Solo queda 1' : n <= 2 ? 'Solo quedan ' + n : 'En stock';
       body.insertBefore(tag, table);
       card.setAttribute('data-stock', String(n));
       if (n <= 0) {
@@ -3886,9 +3883,9 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
         var cta = card.querySelector('.card-cta'), nm = card.querySelector('.card-name');
         if (cta && nm) {
           var wa = (typeof WA !== 'undefined') ? WA : '34671276483';
-          cta.href = 'https://wa.me/' + wa + '?text=' + encodeURIComponent('Hola, avísame cuando llegue el ' + nm.textContent.trim());
+          cta.href = 'https://wa.me/' + wa + '?text=' + encodeURIComponent('Hola, quiero encargar el ' + nm.textContent.trim());
           for (var k = cta.childNodes.length - 1; k >= 0; k--) {
-            if (cta.childNodes[k].nodeType === 3 && cta.childNodes[k].textContent.trim()) { cta.childNodes[k].textContent = ' Avisarme cuando llegue'; break; }
+            if (cta.childNodes[k].nodeType === 3 && cta.childNodes[k].textContent.trim()) { cta.childNodes[k].textContent = ' Encargar por WhatsApp'; break; }
           }
         }
       }
